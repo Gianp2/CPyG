@@ -5,39 +5,56 @@ import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
-  
+
   return {
     plugins: [react(), tailwindcss()],
+
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
+
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'), // Apuntamos a src para mejor orden
+        '@': path.resolve(__dirname, './src'),
       },
+      dedupe: ['firebase'], // 🔥 IMPORTANTE
     },
+
     build: {
-      // Optimizaciones de construcción
       target: 'esnext',
-      minify: 'esbuild', // Es más rápido y eficiente
+      minify: 'esbuild',
       cssCodeSplit: true,
+
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+
       rollupOptions: {
         output: {
-          // Esta es la magia: separa las librerías en archivos independientes
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('firebase')) {
-                return 'vendor-firebase'; // Firebase en su propio archivo
-              }
+              // ❌ ELIMINAMOS firebase de acá
+
               if (id.includes('react')) {
-                return 'vendor-react'; // React en su propio archivo
+                return 'vendor-react';
               }
-              return 'vendor'; // El resto de librerías
+
+              return 'vendor';
             }
           },
         },
       },
     },
+
+    optimizeDeps: {
+      include: [
+        'firebase/app',
+        'firebase/auth',
+        'firebase/firestore',
+        'firebase/storage',
+      ],
+    },
+
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
     },

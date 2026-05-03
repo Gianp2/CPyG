@@ -6,46 +6,75 @@ import {
 import { auth } from "../firebase/config";
 
 export const authService = {
+  /**
+   * Login de usuario
+   */
   login: async (email, password) => {
     try {
-      return await signInWithEmailAndPassword(auth, email, password);
+      if (!auth) throw new Error("Auth no inicializado");
+
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      return userCredential;
     } catch (error) {
-      // Mapeamos los errores de Firebase a mensajes en español amigables
       let message = "Error al iniciar sesión";
-      
-      switch (error.code) {
-        case "auth/user-not-found":
-          message = "No existe un usuario con este correo";
-          break;
-        case "auth/wrong-password":
-          message = "La contraseña es incorrecta";
-          break;
-        case "auth/invalid-email":
-          message = "El formato del correo no es válido";
-          break;
-        case "auth/too-many-requests":
-          message = "Demasiados intentos. Intenta más tarde";
-          break;
-        default:
-          message = error.message;
+
+      if (error.code) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            message = "No existe un usuario con este correo";
+            break;
+          case "auth/wrong-password":
+            message = "La contraseña es incorrecta";
+            break;
+          case "auth/invalid-email":
+            message = "El formato del correo no es válido";
+            break;
+          case "auth/too-many-requests":
+            message = "Demasiados intentos. Intenta más tarde";
+            break;
+          default:
+            message = "Credenciales inválidas";
+        }
       }
-      
-      // Lanzamos el error con el mensaje amigable para que el componente lo atrape
+
       throw new Error(message);
     }
   },
 
+  /**
+   * Logout
+   */
   logout: async () => {
     try {
-      return await signOut(auth);
+      if (!auth) throw new Error("Auth no inicializado");
+
+      await signOut(auth);
     } catch (error) {
       throw new Error("No se pudo cerrar la sesión");
     }
   },
 
+  /**
+   * Listener de cambios de autenticación
+   */
   onAuthChange: (callback) => {
-    return onAuthStateChanged(auth, callback);
+    if (!auth) return () => {};
+
+    return onAuthStateChanged(auth, (user) => {
+      callback(user ?? null);
+    });
   },
 
-  getCurrentUser: () => auth.currentUser
+  /**
+   * Usuario actual
+   */
+  getCurrentUser: () => {
+    if (!auth) return null;
+    return auth.currentUser ?? null;
+  }
 };
