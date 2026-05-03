@@ -3,67 +3,60 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
-  Outlet
+  Outlet,
 } from "react-router-dom";
 
-import { useAuth } from "./hooks/useAuth";
 import Loader from "./components/ui/Loader";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-// Lazy load páginas
+// Lazy pages
 const Home = lazy(() => import("./pages/Home"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Optimizado: Un componente de carga más ligero
+/**
+ * Loading UI centralizado
+ */
 const LoadingScreen = () => (
-  <div className="h-screen w-full flex items-center justify-center bg-white" aria-live="polite">
+  <div className="h-screen w-full flex items-center justify-center bg-white">
     <Loader />
   </div>
 );
 
-// Componente para proteger rutas y envolver con Suspense de forma global
-const ProtectedRoute = () => {
-  const { user, loading } = useAuth();
-
-  if (loading) return <LoadingScreen />;
-
-  if (!user) {
-    return <Navigate to="/admin/login" replace />;
-  }
-
-  // Outlet permite renderizar los hijos de la ruta
-  return <Outlet />;
+/**
+ * Wrapper de Suspense para páginas lazy
+ */
+const AppLayout = ({ children }) => {
+  return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
 };
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // Envolvemos todo en un Suspense de nivel superior para evitar parpadeos
     element: (
-      <Suspense fallback={<LoadingScreen />}>
+      <AppLayout>
         <Home />
-      </Suspense>
+      </AppLayout>
     ),
   },
   {
     path: "/admin/login",
     element: (
-      <Suspense fallback={<LoadingScreen />}>
+      <AppLayout>
         <AdminLogin />
-      </Suspense>
+      </AppLayout>
     ),
   },
   {
-    // Usamos el layout de ProtectedRoute para el Dashboard
-    element: <ProtectedRoute />,
+    element: <ProtectedRoute />, // ✔ ahora es un componente real separado
     children: [
       {
         path: "/admin/dashboard",
         element: (
-          <Suspense fallback={<LoadingScreen />}>
+          <AppLayout>
             <Dashboard />
-          </Suspense>
+          </AppLayout>
         ),
       },
     ],
@@ -71,9 +64,9 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: (
-      <Suspense fallback={<LoadingScreen />}>
+      <AppLayout>
         <NotFound />
-      </Suspense>
+      </AppLayout>
     ),
   },
 ]);

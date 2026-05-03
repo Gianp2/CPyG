@@ -3,7 +3,7 @@ import { animalService } from "../services/animalService";
 import Button from "../components/ui/Button";
 import Loader from "../components/ui/Loader";
 import { Upload, Save, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
-import { toast } from "sonner"; // Eliminamos Toaster de aquí, ya está en App.tsx
+import { toast } from "sonner";
 
 export default function AnimalForm({ editingAnimal, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -17,19 +17,19 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(editingAnimal?.imagenURL || null);
   const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef();
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile));
-      
-      toast.success("¡Imagen lista!", {
-        description: "La foto se cargó correctamente.",
-        icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
-      });
-    }
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
+
+    toast.success("¡Imagen lista!", {
+      description: "La foto se cargó correctamente.",
+      icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -42,51 +42,42 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
       });
     }
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
       if (editingAnimal) {
-        await toast.promise(
-          animalService.update(editingAnimal.id, formData, file),
-          {
-            loading: "Actualizando datos...",
-            success: () => {
-              onSuccess();
-              return "¡Cambios guardados con éxito! ✨";
-            },
-            error: (err) => `Ups, algo falló: ${err.message}`,
-          }
-        );
+        await animalService.update(editingAnimal.id, formData, file);
+
+        toast.success("¡Cambios guardados con éxito! ✨");
       } else {
-        await toast.promise(
-          animalService.create(formData, file),
-          {
-            loading: "Creando nueva ficha...",
-            success: () => {
-              onSuccess();
-              setFormData({
-                nombre: "",
-                edad: "",
-                tamaño: "Mediano",
-                descripcion: "",
-                estado: "En adopción",
-              });
-              setFile(null);
-              setPreview(null);
-              return "¡Bienvenido al refugio! 🐾";
-            },
-            error: (err) => `No se pudo crear: ${err.message}`,
-          }
-        );
+        await animalService.create(formData, file);
+
+        toast.success("¡Bienvenido al refugio! 🐾");
+
+        setFormData({
+          nombre: "",
+          edad: "",
+          tamaño: "Mediano",
+          descripcion: "",
+          estado: "En adopción",
+        });
+
+        setFile(null);
+        setPreview(null);
       }
+
+      onSuccess?.();
     } catch (error) {
-        console.error(error);
+      console.error(error);
+      toast.error(error.message || "Error inesperado");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = () => {
+    if (!editingAnimal) return;
+
     toast.custom((t) => (
       <div className="bg-white border border-slate-200 p-6 rounded-[2rem] shadow-2xl flex flex-col gap-4 min-w-[320px]">
         <div className="flex items-start gap-4">
@@ -94,12 +85,15 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
             <Trash2 className="w-6 h-6 text-red-600" />
           </div>
           <div className="flex-1">
-            <h3 className="font-black text-slate-900 text-lg">¿Borrar a {editingAnimal.nombre}?</h3>
+            <h3 className="font-black text-slate-900 text-lg">
+              ¿Borrar a {editingAnimal?.nombre}?
+            </h3>
             <p className="text-slate-500 text-sm leading-relaxed">
               Esta acción eliminará permanentemente la ficha.
             </p>
           </div>
         </div>
+
         <div className="flex gap-3 mt-2">
           <button
             onClick={() => {
@@ -110,6 +104,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
           >
             Sí, eliminar
           </button>
+
           <button
             onClick={() => toast.dismiss(t)}
             className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition-colors"
@@ -122,19 +117,19 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
   };
 
   const confirmDeletion = async () => {
+    if (!editingAnimal) return;
+
     try {
       setLoading(true);
-      await toast.promise(
-        animalService.delete(editingAnimal.id),
-        {
-          loading: "Borrando registro...",
-          success: () => {
-            onSuccess();
-            return "El animal ha sido quitado de la lista 🗑️";
-          },
-          error: (err) => `Error: ${err.message}`,
-        }
-      );
+
+      await animalService.delete(editingAnimal.id);
+
+      toast.success("El animal ha sido quitado de la lista 🗑️");
+
+      onSuccess?.();
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Error al eliminar");
     } finally {
       setLoading(false);
     }
@@ -145,18 +140,20 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+
       {/* FOTO */}
       <div className="space-y-3">
         <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">
           Foto del Animal
         </label>
+
         <div
-          onClick={() => fileInputRef.current.click()}
+          onClick={() => fileInputRef.current?.click()}
           className="relative group cursor-pointer aspect-video rounded-4xl overflow-hidden border-4 border-dashed border-brand-accent/40 hover:border-brand-primary transition-all duration-300 flex items-center justify-center bg-brand-beige/10 hover:scale-[1.01]"
         >
           {preview ? (
             <>
-              <img src={preview} className="w-full h-full object-cover" alt="Vista previa" />
+              <img src={preview} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-black gap-3 text-lg backdrop-blur-sm">
                 <Upload className="w-6 h-6" /> Cambiar Foto
               </div>
@@ -168,7 +165,14 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
               <span className="text-sm opacity-70">JPG, PNG o WEBP</span>
             </div>
           )}
-          <input type="file" hidden ref={fileInputRef} onChange={handleFileChange} accept="image/*" />
+
+          <input
+            type="file"
+            hidden
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+          />
         </div>
       </div>
 
@@ -185,6 +189,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
             onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
           />
         </div>
+
         <div className="space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Edad</label>
           <input
@@ -212,6 +217,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
             <option value="Grande">Grande</option>
           </select>
         </div>
+
         <div className="space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Estado</label>
           <div className={`${inputClasses} bg-brand-primary/10 text-brand-primary font-black flex items-center`}>
@@ -235,10 +241,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
 
       {/* BOTONES */}
       <div className="flex flex-col gap-4">
-        <Button
-          disabled={loading}
-          className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl"
-        >
+        <Button disabled={loading} className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl">
           {loading ? <Loader /> : (
             <>
               <Save className="w-5 h-5" />
