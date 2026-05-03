@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import Loader from "./components/ui/Loader";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { useAuth } from "./hooks/useAuth";
 
 // Lazy pages
 const Home = lazy(() => import("./pages/Home"));
@@ -25,7 +25,20 @@ const LoadingScreen = () => (
 );
 
 /**
- * Wrapper de Suspense para páginas lazy
+ * Wrapper de protección de rutas
+ * (IMPORTANTE: se mantiene simple para evitar side effects raros)
+ */
+const ProtectedRoute = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <LoadingScreen />;
+  if (!user) return <Navigate to="/admin/login" replace />;
+
+  return <Outlet />;
+};
+
+/**
+ * Layout base con Suspense global
  */
 const AppLayout = ({ children }) => {
   return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
@@ -49,7 +62,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    element: <ProtectedRoute />, // ✔ ahora es un componente real separado
+    element: <ProtectedRoute />,
     children: [
       {
         path: "/admin/dashboard",
