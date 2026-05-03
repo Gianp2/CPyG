@@ -17,33 +17,17 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
-      dedupe: ['firebase'], // 🔥 IMPORTANTE
+      dedupe: ['firebase'],
     },
 
     build: {
       target: 'esnext',
       minify: 'esbuild',
-      cssCodeSplit: true,
 
       commonjsOptions: {
         transformMixedEsModules: true,
       },
 
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              // ❌ ELIMINAMOS firebase de acá
-
-              if (id.includes('react')) {
-                return 'vendor-react';
-              }
-
-              return 'vendor';
-            }
-          },
-        },
-      },
     },
 
     optimizeDeps: {
@@ -53,10 +37,6 @@ export default defineConfig(({ mode }) => {
         'firebase/firestore',
         'firebase/storage',
       ],
-    },
-
-    server: {
-      hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
 });
