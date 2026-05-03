@@ -1,0 +1,25 @@
+{
+  "entities": {
+    "Animal": {
+      "title": "Animal",
+      "description": "Un animal rescatado por la protectora",
+      "type": "object",
+      "properties": {
+        "nombre": { "type": "string" },
+        "edad": { "type": "string" },
+        "tamaño": { "type": "string", "enum": ["Pequeño", "Mediano", "Grande"] },
+        "descripcion": { "type": "string" },
+        "imagenURL": { "type": "string", "format": "uri" },
+        "estado": { "type": "string", "enum": ["Disponible", "En adopción", "Adoptado"] },
+        "fechaCreacion": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nombre", "edad", "tamaño", "estado", "fechaCreacion"]
+    }
+  },
+  "firestore": {
+    "/animals/{animalId}": {
+      "schema": "Animal",
+      "description": "Colección principal de animales en adopción"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  
+  --color-brand-bg: #F9F8F3;
+  --color-brand-primary: #588157; /* Olive Green */
+  --color-brand-secondary: #A3B18A; /* Sage Green */
+  --color-brand-dark: #344E41; /* Deep Forest Green */
+  --color-brand-moss: #5A5A40; /* Army Green */
+  --color-brand-light: #E9EDC9; /* Light Sage/Lime */
+  --color-brand-border: #E5E2D9; 
+  
+  --radius-button: 1rem;
+  --radius-section: 2.5rem;
+  --radius-card: 1.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-bg text-brand-dark font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto;
+  }
+
+  .btn-primary {
+    @apply bg-brand-moss text-white px-8 py-3 rounded-full font-semibold transition-all shadow-md active:scale-95 disabled:opacity-50;
+  }
+
+  .btn-primary:hover {
+    @apply bg-brand-dark shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border border-brand-border text-brand-dark px-8 py-3 rounded-full font-semibold transition-all active:scale-95 disabled:opacity-50;
+  }
+
+  .btn-outline:hover {
+    @apply bg-brand-light/30 shadow-sm border-brand-secondary;
+  }
+
+  .card-natural {
+    @apply bg-white rounded-card border border-brand-border shadow-sm transition-all duration-300;
+  }
+  
+  .glass-natural {
+    @apply bg-white/50 backdrop-blur-md border border-brand-border;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #A3B18A;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #588157;
+}
