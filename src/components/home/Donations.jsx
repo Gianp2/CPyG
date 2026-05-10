@@ -27,13 +27,15 @@ export default function Donations() {
   return (
     <section
       id="donations"
-      className="section-padding bg-brand-moss relative overflow-hidden"
+      /* w-full y overflow-x-hidden previenen el desplazamiento lateral */
+      className="section-padding bg-brand-moss relative overflow-x-hidden w-full"
     >
-      <div className="max-w-4xl mx-auto text-center text-brand-bg relative z-10">
+      <div className="max-w-4xl mx-auto text-center text-brand-bg relative z-10 px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          className="w-full"
         >
           {/* ICONO */}
           <div className="inline-block p-4 bg-white/10 rounded-full mb-8 backdrop-blur-md">
@@ -51,10 +53,10 @@ export default function Donations() {
           </p>
 
           {/* CARDS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
             
             {/* ALIAS */}
-            <div className="bg-white/10 rounded-section p-10 text-brand-bg shadow-lg border border-white/20 backdrop-blur-sm flex flex-col justify-between h-full">
+            <div className="bg-white/10 rounded-section p-8 md:p-10 text-brand-bg shadow-lg border border-white/20 backdrop-blur-sm flex flex-col justify-between h-full w-full">
               <div>
                 <div className="flex items-center gap-3 mb-6 opacity-60">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -65,16 +67,15 @@ export default function Donations() {
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-2xl font-mono font-bold break-all">
+                <div className="flex justify-between items-center gap-4 mb-2">
+                  <h3 className="text-xl md:text-2xl font-mono font-bold break-all">
                     {DONATION_DATA.alias}
                   </h3>
 
                   <button
-                    onClick={() =>
-                      copyToClipboard(DONATION_DATA.alias, "alias")
-                    }
-                    className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                    onClick={() => copyToClipboard(DONATION_DATA.alias, "alias")}
+                    className="p-2 hover:bg-white/20 rounded-lg transition-colors shrink-0"
+                    title="Copiar Alias"
                   >
                     {copiedField === "alias" ? (
                       <Check className="w-5 h-5 text-brand-light" />
@@ -91,7 +92,7 @@ export default function Donations() {
             </div>
 
             {/* CVU */}
-            <div className="bg-brand-light/20 rounded-section p-10 text-brand-bg shadow-lg border border-white/10 backdrop-blur-sm flex flex-col justify-between h-full">
+            <div className="bg-brand-light/20 rounded-section p-8 md:p-10 text-brand-bg shadow-lg border border-white/10 backdrop-blur-sm flex flex-col justify-between h-full w-full">
               <div>
                 <div className="flex items-center gap-3 mb-6 opacity-60">
                   <div className="p-2 bg-white/20 rounded-xl">
@@ -102,16 +103,15 @@ export default function Donations() {
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-mono font-bold break-all bg-white/10 p-3 rounded-lg w-full">
+                <div className="flex justify-between items-center gap-3 mb-4 overflow-hidden">
+                  <h3 className="text-sm md:text-base font-mono font-bold break-all bg-white/10 p-3 rounded-lg flex-1 min-w-0">
                     {DONATION_DATA.cvu}
                   </h3>
 
                   <button
-                    onClick={() =>
-                      copyToClipboard(DONATION_DATA.cvu, "cvu")
-                    }
+                    onClick={() => copyToClipboard(DONATION_DATA.cvu, "cvu")}
                     className="p-2 hover:bg-white/20 rounded-lg transition-colors shrink-0"
+                    title="Copiar CVU"
                   >
                     {copiedField === "cvu" ? (
                       <Check className="w-5 h-5 text-brand-light" />

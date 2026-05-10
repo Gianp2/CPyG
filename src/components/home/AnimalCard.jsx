@@ -13,16 +13,23 @@ function AnimalCard({ animal }) {
   const message = `¡Hola! Me gustaría obtener más información sobre ${animal.nombre} para adoptar.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-  const currentImage = animal.imagenURL || animal.imagen || animal.foto || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=600";
+  // Optimización de fallback de Unsplash
+  let currentImage = animal.imagenURL || animal.imagen || animal.foto || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=60&w=400";
+
+  if (currentImage.includes("unsplash.com") && !currentImage.includes("&w=")) {
+    currentImage += "&w=400&q=60";
+  }
 
   return (
-    <article className="group bg-white rounded-2xl overflow-hidden flex flex-col h-full border border-brand-border/40 shadow-sm transition-all duration-300 md:hover:shadow-xl">
-      <div className="relative w-full aspect-square overflow-hidden bg-slate-50">
+    <article className="group bg-white rounded-2xl overflow-hidden flex flex-col h-full border border-brand-border/40 shadow-sm transition-all duration-300 md:hover:shadow-md">
+      <div className="relative w-full aspect-square overflow-hidden bg-slate-100">
         <img
           src={currentImage}
-          alt={animal.nombre}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 md:group-hover:scale-110"
+          alt={`Foto de ${animal.nombre}`}
+          // Eliminamos 'md:group-hover:scale-105' y 'duration-500'
+          className="absolute inset-0 w-full h-full object-cover object-center"
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-2 left-2 z-10">
           <span className={`px-2 py-1 rounded-lg text-[8px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-sm ${getStatusStyles(animal.estado)}`}>
@@ -54,6 +61,7 @@ function AnimalCard({ animal }) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`Contactar por WhatsApp para adoptar a ${animal.nombre}`}
           className="w-full py-2.5 rounded-xl bg-brand-primary text-white font-bold text-[10px] sm:text-xs text-center shadow-md active:scale-95 transition-all uppercase tracking-wider"
         >
           Adoptar a {animal.nombre.split(' ')[0]}

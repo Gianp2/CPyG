@@ -21,6 +21,7 @@ const LoadingScreen = () => (
   </div>
 );
 
+// Componente para proteger rutas
 const ProtectedRoute = () => {
   const { user, loading } = useAuth();
 
@@ -30,49 +31,43 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
-const AppLayout = ({ children }) => {
-  return <Suspense fallback={<LoadingScreen />}>{children}</Suspense>;
-};
+// Layout optimizado: El Suspense envuelve al Outlet para que 
+// cualquier cambio de ruta dispare el fallback automáticamente
+const RootLayout = () => (
+  <Suspense fallback={<LoadingScreen />}>
+    <Outlet />
+  </Suspense>
+);
 
 export default function AppRouter() {
   const router = useMemo(() =>
     createBrowserRouter([
       {
         path: "/",
-        element: (
-          <AppLayout>
-            <Home />
-          </AppLayout>
-        ),
-      },
-      {
-        path: "/admin/login",
-        element: (
-          <AppLayout>
-            <AdminLogin />
-          </AppLayout>
-        ),
-      },
-      {
-        element: <ProtectedRoute />,
+        element: <RootLayout />, // Centralizamos el Suspense aquí
         children: [
           {
-            path: "/admin/dashboard",
-            element: (
-              <AppLayout>
-                <Dashboard />
-              </AppLayout>
-            ),
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "admin/login",
+            element: <AdminLogin />,
+          },
+          {
+            element: <ProtectedRoute />, // Protección de rutas
+            children: [
+              {
+                path: "admin/dashboard",
+                element: <Dashboard />,
+              },
+            ],
+          },
+          {
+            path: "*",
+            element: <NotFound />,
           },
         ],
-      },
-      {
-        path: "*",
-        element: (
-          <AppLayout>
-            <NotFound />
-          </AppLayout>
-        ),
       },
     ]),
   []);
