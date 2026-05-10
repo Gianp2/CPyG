@@ -17,7 +17,6 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Se activa apenas se mueve 10px para un cambio rápido
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
@@ -48,7 +47,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? "h-20 bg-white shadow-lg border-none" // Limpio sin bordes residuales
+          ? "h-20 bg-white shadow-lg border-none" 
           : "h-24 md:h-32 bg-transparent" 
       }`}
     >
@@ -56,13 +55,14 @@ export default function Header() {
         
         {/* Logo & Brand */}
         <Link to="/" className="flex items-center gap-3 md:gap-4 group">
-          <div className={`relative overflow-hidden rounded-full transition-all duration-300 ${
-            isScrolled ? "w-12 h-12" : "w-20 h-20 md:w-24 md:h-24"
+          {/* Contenedor del logo ajustado para no cortar bordes */}
+          <div className={`relative transition-all duration-300 flex items-center justify-center ${
+            isScrolled ? "w-12 h-12" : "w-20 h-20 md:w-28 md:h-28"
           }`}>
             <img 
               src={LogoImg} 
               alt="Logo" 
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-contain" // "contain" asegura que se vea completo
             />
           </div>
           
@@ -73,9 +73,13 @@ export default function Header() {
               Como Perros <span className="text-brand-primary">&</span> Gatos
             </h1>
             {!isScrolled && (
-              <span className="text-[10px] md:text-xs uppercase tracking-widest text-brand-primary/80 font-bold hidden xs:block">
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-[10px] md:text-xs uppercase tracking-widest text-brand-primary/80 font-bold hidden xs:block"
+              >
                 Rescate & Adopción
-              </span>
+              </motion.span>
             )}
           </div>
         </Link>
@@ -106,7 +110,7 @@ export default function Header() {
           </Button>
         </div>
 
-        {/* Mobile Toggle Button - CORREGIDO SIN FONDO NI SOMBRA */}
+        {/* Mobile Toggle Button */}
         <button
           className="md:hidden p-2 text-brand-dark transition-colors focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
