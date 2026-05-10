@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { animalService } from "../services/animalService";
 import Button from "../components/ui/Button";
 import Loader from "../components/ui/Loader";
@@ -7,24 +7,44 @@ import { toast } from "sonner";
 
 export default function AnimalForm({ editingAnimal, onSuccess }) {
   const [formData, setFormData] = useState({
-    nombre: editingAnimal?.nombre || "",
-    edad: editingAnimal?.edad || "",
-    tamaño: editingAnimal?.tamaño || "Mediano",
-    descripcion: editingAnimal?.descripcion || "",
+    nombre: "",
+    edad: "",
+    tamaño: "Mediano",
+    descripcion: "",
     estado: "En adopción",
   });
 
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(editingAnimal?.imagenURL || null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Sincronizar el formulario cuando entra un animal para editar
+  useEffect(() => {
+    if (editingAnimal) {
+      setFormData({
+        nombre: editingAnimal.nombre || "",
+        edad: editingAnimal.edad || "",
+        tamaño: editingAnimal.tamaño || "Mediano",
+        descripcion: editingAnimal.descripcion || "",
+        estado: editingAnimal.estado || "En adopción",
+      });
+      setPreview(editingAnimal.imagenURL || null);
+    }
+  }, [editingAnimal]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
+    // Limpieza de memoria: Revocar la URL anterior si no es la original del servidor
+    if (preview && preview !== editingAnimal?.imagenURL) {
+      URL.revokeObjectURL(preview);
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
     setFile(selectedFile);
-    setPreview(URL.createObjectURL(selectedFile));
+    setPreview(objectUrl);
 
     toast.success("¡Imagen lista!", {
       description: "La foto se cargó correctamente.",
@@ -47,13 +67,12 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     try {
       if (editingAnimal) {
         await animalService.update(editingAnimal.id, formData, file);
-
         toast.success("¡Cambios guardados con éxito! ✨");
       } else {
         await animalService.create(formData, file);
-
         toast.success("¡Bienvenido al refugio! 🐾");
 
+        // Reset completo del formulario
         setFormData({
           nombre: "",
           edad: "",
@@ -61,9 +80,9 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
           descripcion: "",
           estado: "En adopción",
         });
-
         setFile(null);
         setPreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
       }
 
       onSuccess?.();
@@ -121,11 +140,8 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
 
     try {
       setLoading(true);
-
       await animalService.delete(editingAnimal.id);
-
       toast.success("El animal ha sido quitado de la lista 🗑️");
-
       onSuccess?.();
     } catch (error) {
       console.error(error);
@@ -153,7 +169,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
         >
           {preview ? (
             <>
-              <img src={preview} className="w-full h-full object-cover" />
+              <img src={preview} className="w-full h-full object-cover" alt="Preview" />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-black gap-3 text-lg backdrop-blur-sm">
                 <Upload className="w-6 h-6" /> Cambiar Foto
               </div>
@@ -232,6 +248,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
         <textarea
           required
           rows="4"
+          maxLength={500}
           placeholder="Contá cómo es el animal..."
           className={`${inputClasses} resize-none`}
           value={formData.descripcion}
@@ -241,7 +258,11 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
 
       {/* BOTONES */}
       <div className="flex flex-col gap-4">
-        <Button disabled={loading} className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl">
+        <Button 
+          type="submit" 
+          disabled={loading} 
+          className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl"
+        >
           {loading ? <Loader /> : (
             <>
               <Save className="w-5 h-5" />

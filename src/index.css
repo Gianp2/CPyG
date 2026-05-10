@@ -2,17 +2,20 @@
 @import "tailwindcss";
 
 @theme {
+  /* Tipografía */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", serif;
   
+  /* Paleta de Colores */
   --color-brand-bg: #F9F8F3;
-  --color-brand-primary: #588157; /* Olive Green */
-  --color-brand-secondary: #A3B18A; /* Sage Green */
-  --color-brand-dark: #344E41; /* Deep Forest Green */
-  --color-brand-moss: #5A5A40; /* Army Green */
-  --color-brand-light: #E9EDC9; /* Light Sage/Lime */
+  --color-brand-primary: #588157;
+  --color-brand-secondary: #A3B18A;
+  --color-brand-dark: #344E41;
+  --color-brand-moss: #5A5A40;
+  --color-brand-light: #E9EDC9;
   --color-brand-border: #E5E2D9; 
   
+  /* Bordes y Radios */
   --radius-button: 1rem;
   --radius-section: 2.5rem;
   --radius-card: 1.5rem;
@@ -20,56 +23,73 @@
 
 @layer base {
   body {
-    @apply bg-brand-bg text-brand-dark font-sans;
+    @apply bg-brand-bg text-brand-dark font-sans leading-relaxed;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4 {
-    @apply font-serif;
+    @apply font-serif font-semibold tracking-tight;
   }
 }
 
 @layer components {
   .section-padding {
-    @apply py-16 md:py-24 px-6 md:px-12 max-w-7xl mx-auto;
+    @apply py-12 md:py-24 px-4 md:px-12 max-w-7xl mx-auto;
   }
 
+  /* Botones Mejorados */
   .btn-primary {
-    @apply bg-brand-moss text-white px-8 py-3 rounded-full font-semibold transition-all shadow-md active:scale-95 disabled:opacity-50;
+    @apply bg-brand-primary text-white px-8 py-3 rounded-button font-bold transition-all 
+           shadow-md active:scale-95 disabled:opacity-50 flex items-center justify-center;
   }
 
   .btn-primary:hover {
-    @apply bg-brand-dark shadow-lg;
+    @apply bg-brand-dark shadow-xl -translate-y-0.5;
   }
 
   .btn-outline {
-    @apply border border-brand-border text-brand-dark px-8 py-3 rounded-full font-semibold transition-all active:scale-95 disabled:opacity-50;
+    @apply border-2 border-brand-border text-brand-dark px-8 py-3 rounded-button font-bold 
+           transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center;
   }
 
   .btn-outline:hover {
-    @apply bg-brand-light/30 shadow-sm border-brand-secondary;
+    @apply bg-brand-light/20 border-brand-secondary text-brand-dark;
   }
 
+  /* Cards Estilizadas */
   .card-natural {
-    @apply bg-white rounded-card border border-brand-border shadow-sm transition-all duration-300;
+    @apply bg-white rounded-card border border-brand-border/60 shadow-sm transition-all duration-500 overflow-hidden;
+  }
+
+  .card-natural:hover {
+    @apply shadow-2xl border-brand-secondary/30 -translate-y-1;
   }
   
-  .glass-natural {
-    @apply bg-white/50 backdrop-blur-md border border-brand-border;
+  /* Utilidad clave para los filtros en móvil */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE y Edge */
+    scrollbar-width: none;    /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
   }
 }
 
-/* Custom Scrollbar */
+/* Scrollbar Global Estilizada */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-brand-bg;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #A3B18A;
-  border-radius: 10px;
+  @apply bg-brand-secondary/50 rounded-full border-2 border-brand-bg;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #588157;
+  @apply bg-brand-primary;
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, PawPrint } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../ui/Button";
+import LogoImg from "../../img/logo.jpg"; 
 
 const NAV_LINKS = [
   { name: "Inicio", href: "#inicio" },
@@ -15,90 +16,157 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
+  }, [isMobileMenuOpen]);
 
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const element = document.querySelector(href);
     if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
+      const offset = isScrolled ? 80 : 100; 
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - offset;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
     setIsMobileMenuOpen(false);
   };
 
   return (
-    <header 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/50 backdrop-blur-md border-b border-brand-border py-4" : "bg-transparent py-6"
+    <header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${
+        isScrolled
+          ? "h-20 bg-white/95 backdrop-blur-md shadow-md" 
+          : "h-24 md:h-32 bg-transparent" 
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-brand-secondary rounded-full flex items-center justify-center group-hover:rotate-12 transition-transform shadow-sm">
-            <PawPrint className="w-6 h-6 text-white" />
+      <nav className="max-w-7xl mx-auto h-full px-5 md:px-10 flex justify-between items-center">
+        
+        {/* Logo & Brand - MOVIMIENTO ELIMINADO */}
+        <Link to="/" className="flex items-center gap-3 md:gap-4 group">
+          <div className={`relative overflow-hidden rounded-full border-2 border-transparent ${
+            isScrolled ? "w-14 h-14" : "w-20 h-20 md:w-24 md:h-24"
+          }`}>
+            <img 
+              src={LogoImg} 
+              alt="Logo" 
+              className="w-full h-full object-cover" 
+            />
           </div>
-          <span className="text-xl font-bold tracking-tight text-brand-dark">
-             Perros <span className="text-brand-primary">&</span> Gatos
-          </span>
+          
+          <div className="flex flex-col">
+            <h1 className={`font-black tracking-tight text-brand-dark leading-tight transition-all duration-500 ${
+              isScrolled ? "text-lg md:text-xl" : "text-xl md:text-3xl"
+            }`}>
+            Como Perros <span className="text-brand-primary">&</span> Gatos
+            </h1>
+            {!isScrolled && (
+              <span className="text-[10px] md:text-xs uppercase tracking-widest text-brand-primary/80 font-bold hidden xs:block">
+                Rescate & Adopción
+              </span>
+            )}
+          </div>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={(e) => scrollToSection(e, link.href)}
-              className="text-sm font-medium text-brand-dark opacity-80 hover:text-brand-primary hover:opacity-100 transition-all"
-            >
-              {link.name}
-            </a>
-          ))}
-          <Button onClick={(e) => scrollToSection(e, "#animals")} className="px-6 py-2.5 text-sm">Adoptar ahora</Button>
+          <ul className="flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  onClick={(e) => scrollToSection(e, link.href)}
+                  className="text-sm font-bold text-brand-dark/80 hover:text-brand-primary transition-colors relative group py-2"
+                >
+                  {link.name}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <Button
+            onClick={(e) => scrollToSection(e, "#animals")}
+            className={`px-6 rounded-full font-bold transition-all duration-300 transform active:scale-95 shadow-sm ${
+              isScrolled ? "py-2 text-sm" : "py-3 text-base"
+            }`}
+          >
+            Adoptar ahora
+          </Button>
         </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden p-2 text-brand-dark"
+        {/* Mobile Toggle Button */}
+        <button
+          className={`md:hidden p-2.5 rounded-xl transition-colors ${
+            isScrolled ? "bg-brand-primary/10 text-brand-primary" : "bg-white/20 text-brand-dark backdrop-blur-sm"
+          }`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menu"
         >
-          {isMobileMenuOpen ? <X /> : <Menu />}
+          {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-brand-bg border-b border-brand-border p-6 md:hidden flex flex-col gap-4 shadow-xl"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 w-full h-screen bg-white md:hidden z-[60] flex flex-col"
           >
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className="text-lg font-medium text-brand-dark border-b border-brand-border/50 pb-2"
+            <div className="flex justify-between items-center px-6 h-24 border-b border-slate-50">
+               <span className="font-black text-xl text-brand-dark">Menú</span>
+               <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 bg-slate-100 rounded-full"
+               >
+                <X size={24} />
+               </button>
+            </div>
+
+            <div className="flex flex-col gap-4 p-8">
+              {NAV_LINKS.map((link, index) => (
+                <motion.a
+                  key={link.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  href={link.href}
+                  onClick={(e) => scrollToSection(e, link.href)}
+                  className="text-3xl font-bold text-brand-dark py-4 border-b border-slate-50 flex justify-between items-center group"
+                >
+                  {link.name}
+                  <span className="text-brand-primary opacity-0 group-hover:opacity-100">→</span>
+                </motion.a>
+              ))}
+              
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-10"
               >
-                {link.name}
-              </a>
-            ))}
-            <Button onClick={(e) => scrollToSection(e, "#animals")} className="w-full mt-2">Adoptar ahora</Button>
+                <Button
+                  onClick={(e) => scrollToSection(e, "#animals")}
+                  className="w-full py-5 text-xl rounded-2xl shadow-xl shadow-brand-primary/20"
+                >
+                  Adoptar ahora
+                </Button>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

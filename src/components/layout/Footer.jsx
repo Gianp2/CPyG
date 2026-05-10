@@ -1,4 +1,4 @@
-import { PawPrint, Instagram, Facebook, Phone } from "lucide-react";
+import { Instagram, Facebook, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -6,10 +6,15 @@ export default function Footer() {
     <footer className="bg-white/30 backdrop-blur-sm border-t border-brand-border h-16 flex items-center">
       <div className="max-w-7xl mx-auto px-12 w-full flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60 text-brand-dark">
         
-        <span>© {new Date().getFullYear()} Como Perros & Gatos</span>
+        {/* BOTÓN ADMIN ESCONDIDO AQUÍ */}
+        <Link 
+          to="/admin/login" 
+          className="hover:opacity-100 transition-opacity cursor-default"
+        >
+          © {new Date().getFullYear()} Como Perros & Gatos
+        </Link>
 
         <div className="flex gap-6 mt-2 md:mt-0 items-center">
-
           <a
             href="https://www.instagram.com/comoperrosygatosarmstrong/"
             target="_blank"
@@ -40,12 +45,7 @@ export default function Footer() {
             WhatsApp
           </a>
 
-          <Link
-            to="/admin/login"
-            className="text-brand-primary cursor-pointer hover:opacity-80 transition"
-          >
-            Acceso Admin
-          </Link>
+          {/* El botón anterior de Admin ha sido eliminado de aquí */}
         </div>
       </div>
     </footer>
