@@ -71,26 +71,26 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 px-6 bg-transparent overflow-hidden">
+    <section id="contact" className="py-12 md:py-20 px-4 md:px-6 bg-transparent overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Encabezado */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-widest mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold uppercase tracking-widest mb-4 md:mb-6"
           >
             <PawPrint className="w-3 h-3" />
             Contacto
           </motion.div>
 
-          <h2 className="text-4xl md:text-6xl font-serif text-slate-800 mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-6xl font-serif text-slate-800 mb-4 md:mb-6 tracking-tight leading-tight">
             ¡Estamos a un{" "}
             <span className="relative inline-block">
               <span className="relative z-10 italic text-brand-primary">click</span>
               <svg
-                className="absolute -bottom-2 left-0 w-full h-3 text-brand-secondary/40 -z-0"
+                className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-2 md:h-3 text-brand-secondary/40 -z-0"
                 viewBox="0 0 100 12"
                 preserveAspectRatio="none"
               >
@@ -105,82 +105,93 @@ export default function Contact() {
             de distancia!
           </h2>
 
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-500 max-w-2xl mx-auto text-base md:text-lg px-2">
             ¿Tenés dudas sobre el proceso de adopción o querés colaborar con
             nosotros? Contactanos por cualquiera de estos medios.
           </p>
         </div>
 
         {/* CONTENEDOR DE TARJETAS */}
-        <div className="space-y-6">
-          {/* Fila superior: 3 números de teléfono */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PHONE_METHODS.map((method, i) => (
-              <motion.a
-                key={i}
-                href={method.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => handleContactClick(method.label)}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                whileHover={{ y: -10 }}
-                className={`group relative p-8 rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
-              >
-                <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                  {method.icon}
-                </div>
+        <div className="space-y-10 md:space-y-14">
+          
+          {/* Bloque de WhatsApp */}
+          <div className="space-y-4">
+            <span className="block text-center text-[11px] md:text-xs font-bold tracking-widest text-slate-400 uppercase">
+              Líneas de WhatsApp
+            </span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              {PHONE_METHODS.map((method, i) => (
+                <motion.a
+                  key={i}
+                  href={method.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleContactClick(method.label)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  whileHover={{ y: -8 }}
+                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+                >
+                  <div className="mb-4 md:mb-6 p-3 md:p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                    {method.icon}
+                  </div>
 
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-3 opacity-60">
-                  {method.label}
-                </h4>
+                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-60">
+                    {method.label}
+                  </h4>
 
-                <p className="text-base font-bold font-sans break-all leading-tight">
-                  {method.value}
-                </p>
+                  <p className="text-base font-bold font-sans break-all leading-tight px-2">
+                    {method.value}
+                  </p>
 
-                <div className="mt-6 flex items-center gap-2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                  IR AHORA <ExternalLink className="w-3 h-3" />
-                </div>
-              </motion.a>
-            ))}
+                  <div className="mt-4 md:mt-6 flex items-center gap-2 text-[10px] font-bold opacity-70 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    IR AHORA <ExternalLink className="w-3 h-3" />
+                  </div>
+                </motion.a>
+              ))}
+            </div>
           </div>
 
-          {/* Fila inferior: 2 redes sociales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {SOCIAL_METHODS.map((method, i) => (
-              <motion.a
-                key={i}
-                href={method.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => handleContactClick(method.label)}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i + 3) * 0.1, duration: 0.5 }}
-                whileHover={{ y: -10 }}
-                className={`group relative p-8 rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
-              >
-                <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                  {method.icon}
-                </div>
+          {/* Bloque de Redes Sociales */}
+          <div className="space-y-4 max-w-4xl mx-auto">
+            <span className="block text-center text-[11px] md:text-xs font-bold tracking-widest text-slate-400 uppercase">
+              Redes Sociales
+            </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {SOCIAL_METHODS.map((method, i) => (
+                <motion.a
+                  key={i}
+                  href={method.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleContactClick(method.label)}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  whileHover={{ y: -8 }}
+                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+                >
+                  <div className="mb-4 md:mb-6 p-3 md:p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                    {method.icon}
+                  </div>
 
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-3 opacity-60">
-                  {method.label}
-                </h4>
+                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-60">
+                    {method.label}
+                  </h4>
 
-                <p className="text-base font-bold font-sans break-all leading-tight">
-                  {method.value}
-                </p>
+                  <p className="text-base font-bold font-sans break-words leading-tight px-2">
+                    {method.value}
+                  </p>
 
-                <div className="mt-6 flex items-center gap-2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                  IR AHORA <ExternalLink className="w-3 h-3" />
-                </div>
-              </motion.a>
-            ))}
+                  <div className="mt-4 md:mt-6 flex items-center gap-2 text-[10px] font-bold opacity-70 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    IR AHORA <ExternalLink className="w-3 h-3" />
+                  </div>
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -189,27 +200,27 @@ export default function Contact() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="mt-20 p-8 md:p-12 bg-white rounded-[3rem] border border-brand-border flex flex-col md:flex-row items-center justify-between gap-8 shadow-inner relative overflow-hidden"
+          className="mt-16 md:mt-24 p-6 md:p-12 bg-white rounded-3xl md:rounded-[3rem] border border-brand-border flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 shadow-inner relative overflow-hidden"
         >
-          <div className="absolute top-[-20%] right-[-5%] opacity-[0.03] pointer-events-none">
+          <div className="absolute top-[-20%] right-[-5%] opacity-[0.02] md:opacity-[0.03] pointer-events-none hidden sm:block">
             <PawPrint className="w-64 h-64 rotate-12" />
           </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-            <div className="relative group">
-              <div className="w-20 h-20 bg-brand-secondary rounded-[2rem] flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500">
-                <PawPrint className="w-10 h-10" />
+          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8 relative z-10 w-full text-center sm:text-left">
+            <div className="relative group shrink-0">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-secondary rounded-2xl md:rounded-[2rem] flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                <PawPrint className="w-8 h-8 md:w-10 md:h-10" />
               </div>
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-brand-primary rounded-full flex items-center justify-center text-white border-4 border-white">
-                <Heart className="w-3 h-3 fill-current" />
+              <div className="absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 bg-brand-primary rounded-full flex items-center justify-center text-white border-2 md:border-4 border-white">
+                <Heart className="w-2.5 h-2.5 md:w-3 md:h-3 fill-current" />
               </div>
             </div>
 
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold text-brand-dark tracking-tight mb-2">
+            <div className="flex flex-col gap-1">
+              <h3 className="text-xl md:text-2xl font-bold text-brand-dark tracking-tight">
                 Protectora de animales
               </h3>
-              <p className="text-slate-500 font-medium text-lg max-w-xl">
+              <p className="text-slate-500 font-medium text-base md:text-lg max-w-xl leading-relaxed">
                 Trabajamos de forma{" "}
                 <span className="text-brand-primary italic font-semibold">
                   independiente
@@ -224,7 +235,7 @@ export default function Contact() {
 
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="px-8 py-4 bg-brand-dark text-white rounded-2xl font-bold text-sm shadow-xl hidden lg:block"
+            className="w-full md:w-auto text-center px-8 py-4 bg-brand-dark text-white rounded-2xl font-bold text-sm shadow-xl hidden lg:block"
           >
             #SumateAAdoptar
           </motion.div>
