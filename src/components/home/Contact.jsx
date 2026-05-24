@@ -17,25 +17,26 @@ const PHONE_METHODS = [
     value: "+54 9 3471 34-7911",
     href: "https://wa.me/5493471347911",
     bg: "bg-[#E9EDC9]/40",
-    text: "text-[#588157]",
+    // Ajuste: colores más oscuros para mayor contraste
+    text: "text-[#2d6a4f]", 
     hover: "hover:bg-[#588157] hover:text-white",
   },
   {
     icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp Castraciones",
-    value: "+54 9 3471 00-0000", // Cambiar por el real
+    value: "+54 9 3471 00-0000",
     href: "https://wa.me/5493471000000",
     bg: "bg-[#CCD5AE]/40",
-    text: "text-[#4F772D]",
+    text: "text-[#386641]",
     hover: "hover:bg-[#4F772D] hover:text-white",
   },
   {
     icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp Voluntarios",
-    value: "+54 9 3471 11-1111", // Cambiar por el real
+    value: "+54 9 3471 11-1111",
     href: "https://wa.me/5493471111111",
     bg: "bg-[#FAEDCD]/50",
-    text: "text-[#D4A373]",
+    text: "text-[#bc6c25]",
     hover: "hover:bg-[#D4A373] hover:text-white",
   },
 ];
@@ -47,16 +48,16 @@ const SOCIAL_METHODS = [
     value: "@comoperrosygatos",
     href: "https://www.instagram.com/comoperrosygatosarmstrong/",
     bg: "bg-[#DDE5B6]/50",
-    text: "text-[#344E41]",
+    text: "text-[#1b4332]",
     hover: "hover:bg-[#344E41] hover:text-white",
   },
   {
     icon: <Facebook className="w-6 h-6" />,
     label: "Facebook",
     value: "Como Perros y Gatos Armstrong",
-    href: "https://www.facebook.com/PerritosdeArmstrong", // Cambiar por el link real si es diferente
+    href: "https://www.facebook.com/PerritosdeArmstrong",
     bg: "bg-[#B5E2FA]/40",
-    text: "text-[#4A90E2]",
+    text: "text-[#00509d]",
     hover: "hover:bg-[#4A90E2] hover:text-white",
   },
 ];
@@ -138,11 +139,12 @@ export default function Contact() {
                     {method.icon}
                   </div>
 
-                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-60">
+                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-80">
                     {method.label}
                   </h4>
 
-                  <p className="text-base font-bold font-sans break-all leading-tight px-2">
+                  {/* Ajuste: Font-extrabold para que resalte más */}
+                  <p className="text-base md:text-lg font-extrabold font-sans break-all leading-tight px-2">
                     {method.value}
                   </p>
 
@@ -178,11 +180,12 @@ export default function Contact() {
                     {method.icon}
                   </div>
 
-                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-60">
+                  <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-80">
                     {method.label}
                   </h4>
 
-                  <p className="text-base font-bold font-sans break-words leading-tight px-2">
+                  {/* Ajuste: Font-extrabold para que resalte más */}
+                  <p className="text-base md:text-lg font-extrabold font-sans break-words leading-tight px-2">
                     {method.value}
                   </p>
 
@@ -228,7 +231,8 @@ export default function Contact() {
                 con redes de voluntarios y hogares de tránsito en{" "}
                 <span className="text-slate-700 font-bold underline decoration-brand-secondary/30">
                   Armstrong
-                </span>.
+                </span>
+                .
               </p>
             </div>
           </div>
