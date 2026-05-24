@@ -2,21 +2,20 @@ import React from "react";
 import { motion } from "framer-motion";
 import {
   MessageCircle,
-  Mail,
   Instagram,
+  Facebook,
   PawPrint,
   ExternalLink,
   Heart,
 } from "lucide-react";
 import { toast } from "sonner";
 
-const CONTACT_METHODS = [
+const PHONE_METHODS = [
   {
     icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp General",
     value: "+54 9 3471 34-7911",
     href: "https://wa.me/5493471347911",
-    // Base color: Sage/Green
     bg: "bg-[#E9EDC9]/40",
     text: "text-[#588157]",
     hover: "hover:bg-[#588157] hover:text-white",
@@ -24,32 +23,41 @@ const CONTACT_METHODS = [
   {
     icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp Castraciones",
-    value: "+54 9 3471 00-0000", // Cambiar por el real si existe
+    value: "+54 9 3471 00-0000", // Cambiar por el real
     href: "https://wa.me/5493471000000",
-    // Base color: Olive/Moss
     bg: "bg-[#CCD5AE]/40",
     text: "text-[#4F772D]",
     hover: "hover:bg-[#4F772D] hover:text-white",
   },
   {
-    icon: <Mail className="w-6 h-6" />,
-    label: "Email",
-    value: "adopciones@pyg.com",
-    href: "mailto:adopciones@pyg.com",
-    // Base color: Earth/Sand
+    icon: <MessageCircle className="w-6 h-6" />,
+    label: "WhatsApp Voluntarios",
+    value: "+54 9 3471 11-1111", // Cambiar por el real
+    href: "https://wa.me/5493471111111",
     bg: "bg-[#FAEDCD]/50",
     text: "text-[#D4A373]",
     hover: "hover:bg-[#D4A373] hover:text-white",
   },
+];
+
+const SOCIAL_METHODS = [
   {
     icon: <Instagram className="w-6 h-6" />,
     label: "Instagram",
     value: "@comoperrosygatos",
     href: "https://www.instagram.com/comoperrosygatosarmstrong/",
-    // Base color: Deep Jungle
     bg: "bg-[#DDE5B6]/50",
     text: "text-[#344E41]",
     hover: "hover:bg-[#344E41] hover:text-white",
+  },
+  {
+    icon: <Facebook className="w-6 h-6" />,
+    label: "Facebook",
+    value: "Como Perros y Gatos Armstrong",
+    href: "https://www.facebook.com/PerritosdeArmstrong", // Cambiar por el link real si es diferente
+    bg: "bg-[#B5E2FA]/40",
+    text: "text-[#4A90E2]",
+    hover: "hover:bg-[#4A90E2] hover:text-white",
   },
 ];
 
@@ -64,7 +72,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-20 px-6 bg-transparent overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-16">
           <motion.div
@@ -103,42 +111,77 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* Grid de Tarjetas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {CONTACT_METHODS.map((method, i) => (
-            <motion.a
-              key={i}
-              href={method.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => handleContactClick(method.label)}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -10 }}
-              className={`group relative p-8 rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
-            >
-              {/* Icono Flotante */}
-              <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                {method.icon}
-              </div>
+        {/* CONTENEDOR DE TARJETAS */}
+        <div className="space-y-6">
+          {/* Fila superior: 3 números de teléfono */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {PHONE_METHODS.map((method, i) => (
+              <motion.a
+                key={i}
+                href={method.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleContactClick(method.label)}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                whileHover={{ y: -10 }}
+                className={`group relative p-8 rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+              >
+                <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                  {method.icon}
+                </div>
 
-              {/* Texto */}
-              <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-3 opacity-60">
-                {method.label}
-              </h4>
+                <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-3 opacity-60">
+                  {method.label}
+                </h4>
 
-              <p className="text-base font-bold font-sans break-all leading-tight">
-                {method.value}
-              </p>
+                <p className="text-base font-bold font-sans break-all leading-tight">
+                  {method.value}
+                </p>
 
-              {/* Botón sutil que aparece en Hover */}
-              <div className="mt-6 flex items-center gap-2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                IR AHORA <ExternalLink className="w-3 h-3" />
-              </div>
-            </motion.a>
-          ))}
+                <div className="mt-6 flex items-center gap-2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  IR AHORA <ExternalLink className="w-3 h-3" />
+                </div>
+              </motion.a>
+            ))}
+          </div>
+
+          {/* Fila inferior: 2 redes sociales */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {SOCIAL_METHODS.map((method, i) => (
+              <motion.a
+                key={i}
+                href={method.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleContactClick(method.label)}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: (i + 3) * 0.1, duration: 0.5 }}
+                whileHover={{ y: -10 }}
+                className={`group relative p-8 rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+              >
+                <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                  {method.icon}
+                </div>
+
+                <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-3 opacity-60">
+                  {method.label}
+                </h4>
+
+                <p className="text-base font-bold font-sans break-all leading-tight">
+                  {method.value}
+                </p>
+
+                <div className="mt-6 flex items-center gap-2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  IR AHORA <ExternalLink className="w-3 h-3" />
+                </div>
+              </motion.a>
+            ))}
+          </div>
         </div>
 
         {/* Banner Inferior Informativo */}
@@ -148,7 +191,6 @@ export default function Contact() {
           viewport={{ once: true }}
           className="mt-20 p-8 md:p-12 bg-white rounded-[3rem] border border-brand-border flex flex-col md:flex-row items-center justify-between gap-8 shadow-inner relative overflow-hidden"
         >
-          {/* Decoración de fondo */}
           <div className="absolute top-[-20%] right-[-5%] opacity-[0.03] pointer-events-none">
             <PawPrint className="w-64 h-64 rotate-12" />
           </div>
