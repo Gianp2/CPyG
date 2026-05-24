@@ -16,7 +16,7 @@ const ACTIONS = [
   {
     icon: <Activity className="w-6 h-6" />,
     title: "Sanar",
-    desc: "Brindamos primeros auxilios y atención veterinaria a animales heridos, enfermos o en estado crítico, asumiendo su total rehabilitación."
+    desc: "Brindamos primeros auxilios y atención veterinaria a animales heridos, enfermos o en estado crítico, asumiendo su total rehabilitation."
   },
   {
     icon: <Sparkles className="w-6 h-6" />,
@@ -27,6 +27,11 @@ const ACTIONS = [
 
 export default function About() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // Mínima distancia en píxeles para considerar que fue un swapeo válido
+  const minSwipeDistance = 50;
 
   const ABOUT_IMAGES = [
     { url: "nosotros.jpeg", alt: "Voluntarios trabajando en Armstrong" },
@@ -42,19 +47,47 @@ export default function About() {
     setActiveSlide((prev) => (prev === 0 ? ABOUT_IMAGES.length - 1 : prev - 1));
   };
 
+  // Manejo de gestos táctiles idéntico al de Donations
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   return (
     <section id="about" className="section-padding bg-transparent overflow-x-hidden w-full space-y-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* COLUMNA IZQUIERDA: CARRUSEL DE IMÁGENES */}
+          {/* COLUMNA IZQUIERDA: CARRUSEL DE IMÁGENES (ESTILO DONATIONS) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="w-full relative group"
           >
-            <div className="relative h-[350px] md:h-[450px] w-full rounded-3xl overflow-hidden shadow-xl border-8 border-white bg-slate-100">
+            <div
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+              className="relative h-[350px] md:h-[450px] w-full rounded-3xl overflow-hidden shadow-xl border-8 border-white bg-slate-100 select-none touch-pan-y"
+            >
               {/* Slides */}
               {ABOUT_IMAGES.map((img, index) => (
                 <div
@@ -67,21 +100,22 @@ export default function About() {
                     src={img.url}
                     alt={img.alt}
                     className="w-full h-full object-cover"
+                    draggable="false"
                   />
                 </div>
               ))}
 
-              {/* Botones de navegación */}
+              {/* Botones de navegación interna (visibles solo en md y con hover en el grupo) */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-xs lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity hidden md:block"
                 aria-label="Anterior imagen"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-xs lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity hidden md:block"
                 aria-label="Siguiente imagen"
               >
                 <ArrowRight className="w-5 h-5" />
@@ -112,12 +146,12 @@ export default function About() {
             viewport={{ once: true }}
             className="w-full"
           >
-            <span className="text-sm font-bold tracking-wider uppercase text-brand-primary block mb-2">🐾 Agrupación Voluntaria</span>
+            <span className="text-sm font-bold tracking-wider uppercase text-brand-primary block mb-2">Agrupación Voluntaria</span>
             <h2 className="text-3xl md:text-5xl font-serif text-brand-dark mb-6 leading-tight">
               ¿Quiénes <span className="text-brand-secondary italic">somos</span>?
             </h2>
             <p className="text-lg text-brand-dark/70 mb-8 leading-relaxed">
-              Somos ciudadanas y ciudadanos de <strong>Armstrong, Santa Fe (Argentina)</strong> que compartimos un mismo propósito: construir un present y un futuro mejor para los animales de nuestra ciudad. Nuestro lema nos guía en cada paso que damos de manera integral y comprometida.
+              Somos ciudadanas y ciudadanos de <strong>Armstrong, Santa Fe (Argentina)</strong> que compartimos un mismo propósito: construir un presente y un futuro mejor para los animales de nuestra ciudad. Nuestro lema nos guía en cada paso que damos de manera integral y comprometida.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -168,7 +202,7 @@ export default function About() {
                 <h4 className="font-bold text-brand-dark">Campañas de Castración Masivas</h4>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed max-w-md">
-                Colaboramos activamente en <strong>5 campañas de castración masiva al año</strong> coordinadas junto a la Municipalidad de Armstrong, garantizando jornadas gratuitas para la comunidad.
+                Colaboramos activamente en <strong>5 campañas de castración masiva al año</strong> coordinadas junto a la Municipalidad de Armstrong, garantizar jornadas gratuitas para la comunidad.
               </p>
             </div>
 
