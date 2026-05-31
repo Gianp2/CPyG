@@ -6,21 +6,38 @@ import { Search, ExternalLink, ChevronDown, ChevronUp, AlertCircle } from "lucid
 
 const Requirements = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="max-w-2xl mx-auto mt-12 mb-6 px-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-4 bg-white border border-brand-primary/20 rounded-xl font-bold text-brand-dark hover:border-brand-primary transition-all shadow-sm"
       >
-        <span>Requisitos para la adopción</span>
+        <span>Requisitos</span>
         {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
       </button>
+
       {isOpen && (
         <div className="mt-2 p-6 bg-white border border-brand-primary/10 rounded-xl shadow-lg text-slate-600 animate-in fade-in slide-in-from-top-2">
           <ul className="space-y-3 mb-6">
             <li className="flex items-start gap-2"><span>🏠</span> <strong>Patio cerrado</strong></li>
             <li className="flex items-start gap-2"><span>💉</span> <strong>Vacunación anual</strong></li>
+            <li className="ml-6 space-y-1 text-sm">
+              <p>🐶 <strong>Perros:</strong> Séxtuple + Antirrábica</p>
+              <p>🐱 <strong>Gatos:</strong> Triple felina + Antirrábica</p>
+              <p>🐾 <strong>Cachorros:</strong> Vacunas adicionales (Puppy y otras) según criterio del veterinario.</p>
+            </li>
           </ul>
+          
+          <div className="pt-4 border-t border-slate-100">
+            <p className="font-bold text-brand-dark mb-2">📌 Condición indispensable</p>
+            <p className="mb-2">Compromiso de castración a la edad correspondiente.</p>
+            <p className="text-sm text-slate-500 italic">Te pasamos el turno en Veterinaria El Estribo, San Jorge o El Palenque, a elección.</p>
+            <ul className="mt-3 space-y-1 text-sm text-brand-primary">
+              <li className="flex items-center gap-2">✔️ Castraciones gratuitas para perros, perras, gatos y gatas.</li>
+              <li className="flex items-center gap-2">✔️ O en alguna de las 5 castraciones masivas.</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

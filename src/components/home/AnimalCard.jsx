@@ -32,9 +32,26 @@ function AnimalCard({ animal }) {
     animal.foto ||
     "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80";
 
-  const whatsappLink = `https://wa.me/5493471347911?text=${encodeURIComponent(
-    `Hola, me interesa adoptar a ${animal.nombre}.`
-  )}`;
+      const whatsappLink = `https://wa.me/5493471347911?text=${encodeURIComponent(
+          `Hola, me interesa adoptar a "${animal.nombre}"
+
+      FORMULARIO DE ADOPCIÓN RESPONSABLE
+
+      Necesitamos que nos envíes estos datos en un mensaje:
+
+      Nombre y Apellido:
+      Dirección y Localidad:
+      Celular o Redes de Contacto: 
+
+      Sobre el cuidado del animal
+      ¿Tenés otros animales?
+      Cantidad, qué son y si están castrados.
+
+      ¿Tu patio está cerrado?
+      En días de frío o calor, ¿los tendrías adentro o con comodidades?
+
+      ¿Brindarías atención veterinaria cuando lo necesite?`
+        )}`;
 
   return (
     <>
