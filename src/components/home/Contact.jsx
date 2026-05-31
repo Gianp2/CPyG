@@ -46,7 +46,7 @@ const SOCIAL_METHODS = [
     icon: <Music className="w-6 h-6" />,
     label: "TikTok",
     value: "@comoperrosygatos",
-    href: "#", // Aquí agregarás tu URL más tarde
+    href: "https://www.tiktok.com/@comoperrosygatosarms?_r=1&_t=ZS-96pIm4X9DhX", // Aquí agregarás tu URL más tarde
     bg: "bg-[#f8d7da]/50",
     text: "text-[#000000]",
     hover: "hover:bg-[#000000] hover:text-white",

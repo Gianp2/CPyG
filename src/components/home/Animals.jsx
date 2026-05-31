@@ -68,14 +68,13 @@ const AdoptionButton = () => (
 export default function Animals() {
   const { animals, loading } = useAnimals();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterSize, setFilterSize] = useState(null); // Cambiado a null por defecto
+  const [filterSize, setFilterSize] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
 
   const filteredAnimals = useMemo(() => {
     const search = searchTerm.toLowerCase();
     return animals.filter((animal) => {
       const matchesSearch = animal.nombre?.toLowerCase().includes(search);
-      // Si filterSize es null, se muestran todos
       const matchesSize = filterSize === null || animal.tamaño === filterSize;
       return matchesSearch && matchesSize;
     });
@@ -83,7 +82,6 @@ export default function Animals() {
 
   const displayedAnimals = filteredAnimals.slice(0, visibleCount);
 
-  // Función para alternar el filtro
   const handleFilterClick = (size) => {
     setFilterSize(prev => prev === size ? null : size);
   };
@@ -108,9 +106,9 @@ export default function Animals() {
               />
             </div>
 
-            {/* Contenedor de filtros sin "Todos" */}
-            <div className="w-full overflow-x-auto py-2 scrollbar-hide">
-              <div className="flex flex-row justify-start md:justify-center gap-2 min-w-max px-2">
+            {/* Contenedor centralizado de filtros */}
+            <div className="w-full max-w-md overflow-x-auto py-2 scrollbar-hide">
+              <div className="flex flex-row justify-center gap-2 min-w-max px-2">
                 {["Pequeño", "Mediano", "Grande"].map((size) => (
                   <button
                     key={size}
