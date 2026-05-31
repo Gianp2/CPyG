@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart, Wallet, ShoppingBag, Ticket, Star, Calendar, Package, Copy, Check } from "lucide-react";
 
@@ -15,9 +15,30 @@ const ACTIVITIES = [
   { icon: <Calendar className="w-5 h-5" />, title: "Eventos", desc: "Platos caseros y fiestas retro solidarias." }
 ];
 
+const CAROUSEL_IMAGES = [
+  { url: "feria1.jpeg", title: "Ferias Locales", desc: "Insumos y alimento." },
+  { url: "feria.jpeg" },
+  { url: "feria2.jpeg", title: "Merchandising", desc: "Productos de nuestra causa." },
+  { url: "feria3.jpeg" },
+  { url: "feria4.jpeg" },
+  { url: "merch.jpeg" },
+  { url: "feria5.jpeg" },
+  { url: "feriaamericana.jpeg", title: "Feria Americana", desc: "Segunda oportunidad." },
+  { url: "feriaamericana1.jpeg" },
+  { url: "retro.jpeg", title: "Fiesta Retro", desc: "Música y solidaridad." }
+];
+
 export default function Donations() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [copied, setCopied] = useState(null); // 'alias' o 'cvu'
+  const [copied, setCopied] = useState(null);
+
+  // Lógica del Carrusel Automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev === CAROUSEL_IMAGES.length - 1 ? 0 : prev + 1));
+    }, 4000); // Cambia cada 4 segundos
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCopy = (text, type) => {
     navigator.clipboard.writeText(text);
@@ -25,21 +46,8 @@ export default function Donations() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const CAROUSEL_IMAGES = [
-    { url: "feria1.jpeg", title: "Ferias Locales", desc: "Insumos y alimento." },
-    { url: "feria.jpeg" },
-    { url: "feria2.jpeg", title: "Merchandising", desc: "Productos de nuestra causa." },
-    { url: "feria3.jpeg" },
-    { url: "feria4.jpeg" },
-    { url: "merch.jpeg" },
-    { url: "feria5.jpeg" },
-    { url: "feriaamericana.jpeg", title: "Feria Americana", desc: "Segunda oportunidad." },
-    { url: "feriaamericana1.jpeg" },
-    { url: "retro.jpeg", title: "Fiesta Retro", desc: "Música y solidaridad." }
-  ];
-
   return (
-    <section id="donations" className="section-padding bg-brand-moss relative overflow-x-hidden w-full">
+    <section id="donations" className="py-20 bg-brand-moss relative overflow-x-hidden w-full">
       <div className="max-w-5xl mx-auto text-brand-bg relative z-10 px-6">
         
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16 space-y-6">
@@ -65,15 +73,24 @@ export default function Donations() {
             ))}
           </div>
 
-          <div className="lg:col-span-7 relative h-85 w-full rounded-3xl overflow-hidden border-4 border-white/10">
+          {/* Contenedor del Carrusel */}
+          <div className="lg:col-span-7 relative h-[400px] w-full rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl">
             {CAROUSEL_IMAGES.map((img, index) => (
-              <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === activeSlide ? "opacity-100" : "opacity-0"}`}>
-                <img src={img.url} alt="Actividades" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-6 flex flex-col justify-end">
-                  <h4 className="text-xl font-bold text-white">{img.title}</h4>
-                  <p className="text-sm text-white/80">{img.desc}</p>
-                </div>
-              </div>
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: index === activeSlide ? 1 : 0 }}
+                transition={{ duration: 0.7 }}
+                className="absolute inset-0"
+              >
+                <img src={img.url} alt={img.title || "Actividades"} className="w-full h-full object-cover" />
+                {img.title && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-6 flex flex-col justify-end">
+                    <h4 className="text-xl font-bold text-white">{img.title}</h4>
+                    <p className="text-sm text-white/80">{img.desc}</p>
+                  </div>
+                )}
+              </motion.div>
             ))}
           </div>
         </div>
