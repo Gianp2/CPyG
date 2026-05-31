@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle, Heart, Wallet, ShoppingBag, Ticket, Star, Calendar, ArrowLeft, ArrowRight, Package } from "lucide-react";
-import Toast from "../ui/Toast";
+import { Heart, Wallet, ShoppingBag, Ticket, Star, Calendar, Package, Copy, Check } from "lucide-react";
 
 const DONATION_DATA = {
   alias: "comoperrosygatosarms",
   cvu: "0000003100062549564900",
-  whatsapp: "5493471347911" // Reemplaza con tu número real
+  titular: "Eliana Belen Bufarino"
 };
 
 const ACTIVITIES = [
@@ -17,8 +16,14 @@ const ACTIVITIES = [
 ];
 
 export default function Donations() {
-  const [showToast, setShowToast] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [copied, setCopied] = useState(null); // 'alias' o 'cvu'
+
+  const handleCopy = (text, type) => {
+    navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(null), 2000);
+  };
 
   const CAROUSEL_IMAGES = [
     { url: "feria1.jpeg", title: "Ferias Locales", desc: "Insumos y alimento." },
@@ -32,11 +37,6 @@ export default function Donations() {
     { url: "feriaamericana1.jpeg" },
     { url: "retro.jpeg", title: "Fiesta Retro", desc: "Música y solidaridad." }
   ];
-
-  const handleContact = (tipo) => {
-    const mensaje = `Hola, me gustaría colaborar con ustedes mediante ${tipo}. ¿Me podrían pasar los datos?`;
-    window.open(`https://wa.me/${DONATION_DATA.whatsapp}?text=${encodeURIComponent(mensaje)}`, "_blank");
-  };
 
   return (
     <section id="donations" className="section-padding bg-brand-moss relative overflow-x-hidden w-full">
@@ -82,35 +82,43 @@ export default function Donations() {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-8 max-w-4xl mx-auto">
           <h3 className="text-3xl font-serif font-bold text-center mb-10">Formas de colaborar</h3>
           
+          <div className="text-center mb-6">
+             <p className="text-sm text-white/70">Titular de cuenta: <span className="font-bold text-white">{DONATION_DATA.titular}</span></p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Donaciones en Especie */}
             <div className="bg-white/10 rounded-3xl p-6 border border-white/20 flex flex-col items-center text-center">
               <Package className="w-10 h-10 mb-4 text-brand-bg" />
-              <h4 className="font-bold mb-2">Donaciones en Especie</h4>
-              <p className="text-xs text-brand-bg/80 mb-4 flex-1">Chalecos, frazadas, cuchas, alimento o ropa para ferias (en buen estado).</p>
-              <button onClick={() => handleContact("donaciones en especie")} className="bg-white text-brand-moss px-4 py-2 rounded-xl text-sm font-bold hover:bg-white/90 transition">Contactar</button>
+              <h4 className="font-bold mb-2">Donaciones</h4>
+              <p className="text-xs text-brand-bg/80">Chalecos, frazadas, cuchas, alimento o ropa para ferias (en buen estado).</p>
             </div>
 
-            {/* Alias */}
             <div className="bg-white/10 rounded-3xl p-6 border border-white/20 flex flex-col items-center text-center">
               <Heart className="w-10 h-10 mb-4 text-brand-bg" />
               <h4 className="font-bold mb-2">Alias Mercado Pago</h4>
-              <p className="text-xs text-brand-bg/80 mb-4 flex-1">Aporte económico directo para insumos y cirugías.</p>
-              <button onClick={() => handleContact("transferencia por alias")} className="bg-white text-brand-moss px-4 py-2 rounded-xl text-sm font-bold hover:bg-white/90 transition">Solicitar Alias</button>
+              <button 
+                onClick={() => handleCopy(DONATION_DATA.alias, 'alias')}
+                className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-lg mt-2 hover:bg-white/30 transition text-sm font-mono font-bold"
+              >
+                {DONATION_DATA.alias}
+                {copied === 'alias' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+              </button>
             </div>
 
-            {/* CVU */}
             <div className="bg-brand-light/20 rounded-3xl p-6 border border-white/10 flex flex-col items-center text-center">
               <Wallet className="w-10 h-10 mb-4 text-brand-bg" />
-              <h4 className="font-bold mb-2">Datos Bancarios</h4>
-              <p className="text-xs text-brand-bg/80 mb-4 flex-1">Transferencia directa a cuenta bancaria oficial.</p>
-              <button onClick={() => handleContact("datos de CVU")} className="bg-white text-brand-moss px-4 py-2 rounded-xl text-sm font-bold hover:bg-white/90 transition">Solicitar CVU</button>
+              <h4 className="font-bold mb-2">CVU</h4>
+              <button 
+                onClick={() => handleCopy(DONATION_DATA.cvu, 'cvu')}
+                className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-lg mt-2 hover:bg-white/30 transition text-sm font-mono font-bold break-all"
+              >
+                {DONATION_DATA.cvu}
+                {copied === 'cvu' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+              </button>
             </div>
           </div>
         </motion.div>
       </div>
-
-      <Toast isVisible={showToast} message="Redirigiendo a WhatsApp..." onClose={() => setShowToast(false)} />
     </section>
   );
 }

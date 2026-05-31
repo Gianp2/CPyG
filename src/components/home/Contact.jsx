@@ -37,7 +37,7 @@ const SOCIAL_METHODS = [
     icon: <Facebook className="w-6 h-6" />,
     label: "Facebook",
     value: "Como Perros y Gatos Armstrong",
-    href: "https://www.facebook.com/PerritosdeArmstrong",
+    href: "https://www.facebook.com/comoperrosygatos.adopciones.3?locale=es_LA",
     bg: "bg-[#B5E2FA]/40",
     text: "text-[#00509d]",
     hover: "hover:bg-[#4A90E2] hover:text-white",

@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import useAnimals from "../../hooks/useAnimals";
 import AnimalCard from "./AnimalCard";
 import AnimalSkeleton from "../ui/AnimalSkeleton";
-import { Search, Plus, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Plus, ExternalLink, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
 
 // Componente de Requisitos desplegable
 const Requirements = () => {
@@ -45,23 +45,49 @@ const Requirements = () => {
   );
 };
 
-const AdoptionButton = () => (
-  <div className="mt-16 flex flex-col items-center gap-4 p-8 bg-brand-primary/5 rounded-3xl border border-brand-primary/10">
-    <h3 className="text-2xl font-bold text-brand-dark">¿Quieres formar parte?</h3>
-    <p className="text-slate-600 text-center max-w-md">
-      Ya sea que estés listo para adoptar o quieras postularte como hogar de tránsito/adoptante, 
-      completa nuestro formulario y nos pondremos en contacto.
-    </p>
-    <a 
-      href="https://forms.gle/AMy273hRAUMq1Nrd8" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      aria-label="Ir al formulario de contacto para adopción o postulación"
-      className="flex items-center gap-2 px-8 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-lg mt-2"
-    >
-      <ExternalLink className="w-5 h-5" aria-hidden="true" />
-      Completar formulario
-    </a>
+const AdoptionSection = () => (
+  <div className="mt-16 space-y-8">
+    {/* Formulario Adopción */}
+    <div className="flex flex-col items-center gap-4 p-8 bg-brand-primary/5 rounded-3xl border border-brand-primary/10">
+      <h3 className="text-2xl font-bold text-brand-dark">¿Quieres formar parte?</h3>
+      <p className="text-slate-600 text-center max-w-md">
+        Ya sea que estés listo para adoptar o quieras postularte como hogar de tránsito/adoptante, 
+        completa nuestro formulario y nos pondremos en contacto.
+      </p>
+      <a 
+        href="https://forms.gle/AMy273hRAUMq1Nrd8" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-8 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-lg"
+      >
+        <ExternalLink className="w-5 h-5" />
+        Completar formulario
+      </a>
+    </div>
+
+    {/* Sección Denuncias - Integrada con color Verde Oliva */}
+    <div className="p-8 bg-brand-primary/10 rounded-3xl border border-brand-primary/20 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="flex gap-4 items-start">
+        <div className="p-3 bg-brand-primary/20 rounded-2xl text-brand-primary">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+        <div>
+          <h4 className="text-xl font-bold text-brand-dark">Denuncia de maltrato animal</h4>
+          <p className="text-brand-dark/70 text-sm mt-1 max-w-sm">
+            Si eres testigo de un caso de maltrato o negligencia, tu reporte es fundamental. 
+            Utiliza nuestro formulario oficial para informarnos de manera segura.
+          </p>
+        </div>
+      </div>
+      <a 
+        href="https://docs.google.com/forms/d/e/1FAIpQLSczB-o99SY-NIYu4W9C2ZTbWFLkkI9TA2jUvdjmgLqF98brWg/viewform?usp=publish-editor" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-md whitespace-nowrap"
+      >
+        Realizar denuncia
+      </a>
+    </div>
   </div>
 );
 
@@ -106,7 +132,6 @@ export default function Animals() {
               />
             </div>
 
-            {/* Contenedor centralizado de filtros */}
             <div className="w-full max-w-md overflow-x-auto py-2 scrollbar-hide">
               <div className="flex flex-row justify-center gap-2 min-w-max px-2">
                 {["Pequeño", "Mediano", "Grande"].map((size) => (
@@ -157,7 +182,7 @@ export default function Animals() {
               <p className="text-center text-slate-500 py-10" role="status">No encontramos animalitos con esos filtros.</p>
             )}
 
-            <AdoptionButton />
+            <AdoptionSection />
           </>
         )}
       </div>
