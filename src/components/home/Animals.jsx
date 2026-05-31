@@ -47,17 +47,20 @@ const Requirements = () => {
 
 const AdoptionButton = () => (
   <div className="mt-16 flex flex-col items-center gap-4 p-8 bg-brand-primary/5 rounded-3xl border border-brand-primary/10">
-    <h3 className="text-2xl font-bold text-brand-dark">¿Listo para dar un hogar?</h3>
-    <p className="text-slate-600">Completa nuestro formulario y comencemos el proceso de adopción.</p>
+    <h3 className="text-2xl font-bold text-brand-dark">¿Quieres formar parte?</h3>
+    <p className="text-slate-600 text-center max-w-md">
+      Ya sea que estés listo para adoptar o quieras postularte como hogar de tránsito/adoptante, 
+      completa nuestro formulario y nos pondremos en contacto.
+    </p>
     <a 
       href="https://forms.gle/AMy273hRAUMq1Nrd8" 
       target="_blank" 
       rel="noopener noreferrer"
-      aria-label="Ir al formulario de adopción en una nueva pestaña"
-      className="flex items-center gap-2 px-8 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-lg"
+      aria-label="Ir al formulario de contacto para adopción o postulación"
+      className="flex items-center gap-2 px-8 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-lg mt-2"
     >
       <ExternalLink className="w-5 h-5" aria-hidden="true" />
-      Formulario de Adopción
+      Completar formulario
     </a>
   </div>
 );
@@ -81,8 +84,45 @@ export default function Animals() {
 
   return (
     <section id="animals" className="py-10 md:py-20 bg-brand-bg/10" aria-labelledby="animals-title">
-      {/* ... (resto del encabezado igual) ... */}
       <div className="max-w-7xl mx-auto px-4">
+        {/* Encabezado y filtros mejorados */}
+        <div className="mb-12 text-center">
+          <h2 id="animals-title" className="text-3xl md:text-5xl font-serif text-brand-dark mb-8">
+            Ellos esperan por vos
+          </h2>
+          
+          <div className="flex flex-col gap-6 items-center">
+            {/* Barra de búsqueda */}
+            <div className="relative w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre..."
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary shadow-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            {/* Filtros como botones */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {["Todos", "Pequeño", "Mediano", "Grande"].map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setFilterSize(size)}
+                  className={`px-5 py-2 rounded-full font-bold transition-all border ${
+                    filterSize === size
+                      ? "bg-brand-primary text-white border-brand-primary shadow-md"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary"
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6" aria-live="polite">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <AnimalSkeleton key={i} />)}
@@ -95,7 +135,6 @@ export default function Animals() {
               ))}
             </div>
 
-            {/* Inserción del componente Requirements */}
             <Requirements />
 
             {filteredAnimals.length > visibleCount && (
