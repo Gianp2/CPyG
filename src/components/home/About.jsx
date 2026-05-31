@@ -210,8 +210,7 @@ export default function About() {
             <p className="text-xs text-slate-500 leading-relaxed max-w-md text-center mb-4">
               Colaboramos activamente en{" "}
               <strong>5 campañas de castración masiva al año</strong> coordinadas junto a
-              la Municipalidad de Armstrong, garantizando jornadas gratuitas para la
-              comunidad.
+              la Municipalidad de Armstrong, garantizando el acceso gratuito para toda la comunidad.
             </p>
 
             <div className="w-full border-t border-slate-200 pt-4">

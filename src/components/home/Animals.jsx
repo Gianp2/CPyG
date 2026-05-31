@@ -36,7 +36,7 @@ const Requirements = () => {
             <p className="text-sm">Te pasamos el turno en Veterinaria El Estribo, San Jorge o El Palenque, a elección.</p>
             <ul className="mt-3 space-y-1 text-sm italic text-brand-primary">
               <li className="flex items-center gap-2">✔️ Castraciones gratuitas para perros, perras, gatos y gatas.</li>
-              <li className="flex items-center gap-2">✔️ O en alguna de las 5 castraciones masivas 2026.</li>
+              <li className="flex items-center gap-2">✔️ O en alguna de las 5 castraciones masivas.</li>
             </ul>
           </div>
         </div>

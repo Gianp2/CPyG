@@ -1,16 +1,16 @@
 export default function AnimalSkeleton() {
   return (
-    <div 
-      className="bg-white p-3 rounded-3xl shadow-sm animate-pulse border border-slate-100"
-      aria-hidden="true" // Ocultamos el esqueleto a lectores de pantalla
-    >
-      {/* Espacio para la imagen: usamos aspect-square para coincidir con la card real */}
-      <div className="aspect-square bg-slate-200 rounded-2xl w-full mb-3" />
+    <div className="bg-white p-0 rounded-3xl border border-slate-200 shadow-sm animate-pulse flex flex-col h-full overflow-hidden">
+      {/* Aspect square igual a la card */}
+      <div className="aspect-square bg-slate-200 w-full" />
       
-      {/* Líneas para el texto */}
-      <div className="space-y-2 px-1">
-        <div className="h-5 bg-slate-200 rounded w-3/4" />
-        <div className="h-4 bg-slate-100 rounded w-1/2" />
+      <div className="p-5 space-y-3">
+        <div className="h-6 bg-slate-200 rounded-lg w-2/3" />
+        <div className="space-y-2">
+          <div className="h-4 bg-slate-100 rounded w-full" />
+          <div className="h-4 bg-slate-100 rounded w-4/5" />
+        </div>
+        <div className="h-12 bg-slate-100 rounded-2xl mt-4" />
       </div>
     </div>
   );
