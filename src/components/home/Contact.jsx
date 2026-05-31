@@ -4,6 +4,7 @@ import {
   MessageCircle,
   Instagram,
   Facebook,
+  Music, // Icono para TikTok
   PawPrint,
   ExternalLink,
   Heart,
@@ -13,28 +14,9 @@ import { toast } from "sonner";
 const PHONE_METHODS = [
   {
     icon: <MessageCircle className="w-6 h-6" />,
-    label: "WhatsApp General",
-    value: "+54 9 3471 34-7911",
-    href: "https://wa.me/5493471347911",
-    bg: "bg-[#E9EDC9]/40",
-    // Ajuste: colores más oscuros para mayor contraste
-    text: "text-[#2d6a4f]", 
-    hover: "hover:bg-[#588157] hover:text-white",
-  },
-  {
-    icon: <MessageCircle className="w-6 h-6" />,
-    label: "WhatsApp Castraciones",
-    value: "+54 9 3471 00-0000",
-    href: "https://wa.me/5493471000000",
-    bg: "bg-[#CCD5AE]/40",
-    text: "text-[#386641]",
-    hover: "hover:bg-[#4F772D] hover:text-white",
-  },
-  {
-    icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp Voluntarios",
-    value: "+54 9 3471 11-1111",
-    href: "https://wa.me/5493471111111",
+    value: "+54 9 3471 34-6672",
+    href: "https://wa.me/5493471346672",
     bg: "bg-[#FAEDCD]/50",
     text: "text-[#bc6c25]",
     hover: "hover:bg-[#D4A373] hover:text-white",
@@ -59,6 +41,15 @@ const SOCIAL_METHODS = [
     bg: "bg-[#B5E2FA]/40",
     text: "text-[#00509d]",
     hover: "hover:bg-[#4A90E2] hover:text-white",
+  },
+  {
+    icon: <Music className="w-6 h-6" />,
+    label: "TikTok",
+    value: "@comoperrosygatos",
+    href: "#", // Aquí agregarás tu URL más tarde
+    bg: "bg-[#f8d7da]/50",
+    text: "text-[#000000]",
+    hover: "hover:bg-[#000000] hover:text-white",
   },
 ];
 
@@ -91,7 +82,7 @@ export default function Contact() {
             <span className="relative inline-block">
               <span className="relative z-10 italic text-brand-primary">click</span>
               <svg
-                className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-2 md:h-3 text-brand-secondary/40 -z-0"
+                className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-2 md:h-3 text-brand-secondary/40 z-0"
                 viewBox="0 0 100 12"
                 preserveAspectRatio="none"
               >
@@ -118,9 +109,9 @@ export default function Contact() {
           {/* Bloque de WhatsApp */}
           <div className="space-y-4">
             <span className="block text-center text-[11px] md:text-xs font-bold tracking-widest text-slate-400 uppercase">
-              Líneas de WhatsApp
+              Línea de contacto
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="flex justify-center gap-4 md:gap-6 flex-wrap">
               {PHONE_METHODS.map((method, i) => (
                 <motion.a
                   key={i}
@@ -133,21 +124,17 @@ export default function Contact() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-section flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer w-full md:w-[300px] ${method.bg} ${method.text} ${method.hover}`}
                 >
                   <div className="mb-4 md:mb-6 p-3 md:p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                     {method.icon}
                   </div>
-
                   <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-80">
                     {method.label}
                   </h4>
-
-                  {/* Ajuste: Font-extrabold para que resalte más */}
                   <p className="text-base md:text-lg font-extrabold font-sans break-all leading-tight px-2">
                     {method.value}
                   </p>
-
                   <div className="mt-4 md:mt-6 flex items-center gap-2 text-[10px] font-bold opacity-70 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     IR AHORA <ExternalLink className="w-3 h-3" />
                   </div>
@@ -161,7 +148,7 @@ export default function Contact() {
             <span className="block text-center text-[11px] md:text-xs font-bold tracking-widest text-slate-400 uppercase">
               Redes Sociales
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               {SOCIAL_METHODS.map((method, i) => (
                 <motion.a
                   key={i}
@@ -174,21 +161,17 @@ export default function Contact() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.1, duration: 0.5 }}
                   whileHover={{ y: -8 }}
-                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
+                  className={`group relative p-6 md:p-8 rounded-3xl md:rounded-section flex flex-col items-center text-center transition-all duration-500 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200 cursor-pointer ${method.bg} ${method.text} ${method.hover}`}
                 >
                   <div className="mb-4 md:mb-6 p-3 md:p-4 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                     {method.icon}
                   </div>
-
                   <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] mb-2 md:mb-3 opacity-80">
                     {method.label}
                   </h4>
-
-                  {/* Ajuste: Font-extrabold para que resalte más */}
-                  <p className="text-base md:text-lg font-extrabold font-sans break-words leading-tight px-2">
+                  <p className="text-base md:text-lg font-extrabold font-sans break-all leading-tight px-2">
                     {method.value}
                   </p>
-
                   <div className="mt-4 md:mt-6 flex items-center gap-2 text-[10px] font-bold opacity-70 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     IR AHORA <ExternalLink className="w-3 h-3" />
                   </div>
@@ -211,7 +194,7 @@ export default function Contact() {
 
           <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8 relative z-10 w-full text-center sm:text-left">
             <div className="relative group shrink-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-secondary rounded-2xl md:rounded-[2rem] flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-secondary rounded-2xl md:rounded-4xl flex items-center justify-center text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500">
                 <PawPrint className="w-8 h-8 md:w-10 md:h-10" />
               </div>
               <div className="absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 bg-brand-primary rounded-full flex items-center justify-center text-white border-2 md:border-4 border-white">
@@ -236,13 +219,6 @@ export default function Contact() {
               </p>
             </div>
           </div>
-
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="w-full md:w-auto text-center px-8 py-4 bg-brand-dark text-white rounded-2xl font-bold text-sm shadow-xl hidden lg:block"
-          >
-            #SumateAAdoptar
-          </motion.div>
         </motion.div>
       </div>
     </section>

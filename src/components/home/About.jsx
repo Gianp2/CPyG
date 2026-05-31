@@ -36,7 +36,9 @@ export default function About() {
   const ABOUT_IMAGES = [
     { url: "nosotros.jpeg", alt: "Voluntarios trabajando en Armstrong" },
     { url: "nosotros1.jpeg", alt: "Rescatados de la agrupación" },
-    { url: "nosotros2.jpeg", alt: "Labor comunitaria en Armstrong" }
+    { url: "nosotros2.jpeg", alt: "Labor comunitaria en Armstrong" },
+    { url: "nosotros5.jpeg", alt: "Labor comunitaria en Armstrong" },
+    { url: "nosotros4.jpeg", alt: "Labor comunitaria en Armstrong" },
   ];
 
   const nextSlide = () => {
@@ -195,16 +197,56 @@ export default function About() {
           {/* Tarjetas inferiores con contenido centrado */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl text-center">
             
-            {/* Tarjeta 1: Campañas */}
-            <div className="bg-white p-6 rounded-2xl shadow-xs border border-brand-border/40 flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center text-brand-primary mb-3">
-                <Building2 className="w-5 h-5 mb-1" />
-                <h4 className="font-bold text-brand-dark">Campañas de Castración Masivas</h4>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-md">
-                Colaboramos activamente en <strong>5 campañas de castración masiva al año</strong> coordinadas junto a la Municipalidad de Armstrong, garantizar jornadas gratuitas para la comunidad.
-              </p>
+
+          {/* Tarjeta 1: Campañas */}
+          <div className="bg-white p-6 rounded-2xl shadow-xs border border-brand-border/40 flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center text-brand-primary mb-3">
+              <Building2 className="w-5 h-5 mb-1" />
+              <h4 className="font-bold text-brand-dark">
+                Campañas de Castración Masivas
+              </h4>
             </div>
+
+            <p className="text-xs text-slate-500 leading-relaxed max-w-md text-center mb-4">
+              Colaboramos activamente en{" "}
+              <strong>5 campañas de castración masiva al año</strong> coordinadas junto a
+              la Municipalidad de Armstrong, garantizando jornadas gratuitas para la
+              comunidad.
+            </p>
+
+            <div className="w-full border-t border-slate-200 pt-4">
+              <h5 className="text-sm font-bold text-brand-dark mb-3 text-center">
+                Contactos para masivas
+              </h5>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+                  <span className="text-xs font-medium text-slate-700">
+                    Eli
+                  </span>
+                  <a
+                    href="tel:3471628767"
+                    className="text-xs font-semibold text-brand-primary hover:underline"
+                  >
+                    3471 62-8767
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+                  <span className="text-xs font-medium text-slate-700">
+                    Vicky
+                  </span>
+                  <a
+                    href="tel:3471594581"
+                    className="text-xs font-semibold text-brand-primary hover:underline"
+                  >
+                    3471 59-4581
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
             {/* Tarjeta 2: Turnos y Veterinarias */}
             <div className="bg-white p-6 rounded-2xl shadow-xs border border-brand-border/40 flex flex-col items-center justify-center">
@@ -212,15 +254,75 @@ export default function About() {
                 <Syringe className="w-5 h-5 mb-1" />
                 <h4 className="font-bold text-brand-dark">Turnos en Veterinarias</h4>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed mb-4 max-w-md">
-                Gestionamos <strong>30 turnos mensuales gratuitos</strong> otorgados por el municipio en las veterinarias aliadas de la ciudad:
+
+              <p className="text-xs text-slate-500 leading-relaxed mb-4 max-w-md text-center">
+                Gestionamos <strong>30 turnos mensuales gratuitos</strong> otorgados por el
+                municipio en las veterinarias aliadas de la ciudad:
               </p>
-              <div className="flex flex-wrap gap-2 justify-center pt-1">
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">El Estribo</span>
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">San Jorge</span>
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">El Palenque</span>
+
+              <div className="flex flex-wrap gap-2 justify-center pt-1 mb-5">
+                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
+                  El Estribo
+                </span>
+
+                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
+                  San Jorge
+                </span>
+
+                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
+                  El Palenque
+                </span>
               </div>
-            </div>
+
+  {/* Contactos */}
+  <div className="w-full border-t border-slate-200 pt-4">
+    <h5 className="text-sm font-bold text-brand-dark mb-3 text-center">
+      Contactos para solicitar turnos
+    </h5>
+
+    <div className="space-y-2 text-xs text-slate-600">
+      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+        <span className="font-medium">El Estribo (Eli)</span>
+        <a
+          href="tel:3471628767"
+          className="text-brand-primary font-semibold hover:underline"
+        >
+          3471 62-8767
+        </a>
+      </div>
+
+      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+        <span className="font-medium">San Jorge (Agus)</span>
+        <a
+          href="tel:3471570085"
+          className="text-brand-primary font-semibold hover:underline"
+        >
+          3471 57-0085
+        </a>
+      </div>
+
+      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+        <span className="font-medium">El Palenque (Luci)</span>
+        <a
+          href="tel:3471347911"
+          className="text-brand-primary font-semibold hover:underline"
+        >
+          3471 34-7911
+        </a>
+      </div>
+
+      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
+        <span className="font-medium">El Palenque (Luchi)</span>
+        <a
+          href="tel:3471673977"
+          className="text-brand-primary font-semibold hover:underline"
+        >
+          3471 67-3977
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
           </div>
         </motion.div>

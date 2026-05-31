@@ -3,53 +3,39 @@ import { Toaster } from "sonner";
 import AppRouter from "./router";
 
 export default function App() {
-  const [mounted, setMounted] = useState<boolean>(false);
-  
-  // Estado para controlar el tema ("light" o "dark")
+  // Inicializamos el estado para detectar el tema preferido
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("theme") === "dark" ||
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ? "dark"
-        : "light";
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) return savedTheme as "light" | "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
     return "light";
   });
 
-  // Evita problemas de hidratación en producción (Vercel)
+  // Aplicamos la clase al documento lo antes posible
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Efecto que aplica los cambios en el HTML y localStorage cada vez que cambia el tema
-  useEffect(() => {
-    if (!mounted) return;
-
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [theme, mounted]);
+    root.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
-  // Escucha un evento global para cambiar el tema desde cualquier botón de la app
+  // Manejo de eventos globales
   useEffect(() => {
     const handleThemeChange = (e: Event) => {
       const customEvent = e as CustomEvent<"light" | "dark">;
       setTheme(customEvent.detail);
+      localStorage.setItem("theme", customEvent.detail);
     };
 
     window.addEventListener("toggle-theme", handleThemeChange);
     return () => window.removeEventListener("toggle-theme", handleThemeChange);
   }, []);
 
-  if (!mounted) return null;
-
   return (
     <>
+      {/* Toaster se mantiene reactivo al tema actual 
+        Sin el if (!mounted) evitamos el parpadeo inicial
+      */}
       <Toaster
         position="top-right"
         richColors

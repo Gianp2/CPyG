@@ -189,7 +189,7 @@ export default function Donations() {
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
-              className="relative h-[340px] md:h-[400px] w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group select-none touch-pan-y"
+              className="relative h-85 md:h-100 w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group select-none touch-pan-y"
             >
               {/* Slides */}
               {CAROUSEL_IMAGES.map((img, index) => (
@@ -205,7 +205,7 @@ export default function Donations() {
                     className="w-full h-full object-cover"
                     draggable="false"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
                   
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white pointer-events-none">
                     <h4 className="text-xl font-bold font-serif mb-1">{img.title}</h4>

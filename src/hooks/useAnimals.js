@@ -1,65 +1,72 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { animalService } from "../services/animalService";
 
-/**
- * Hook personalizado para gestionar la lógica de animales con paginación.
- */
-export function useAnimals() { // Export nombrado
-  const [animals, setAnimals] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Persistencia en memoria fuera del hook
+let cachedAnimals = [];
+let isFetched = false;
+
+export function useAnimals() {
+  const [animals, setAnimals] = useState(cachedAnimals);
+  const [loading, setLoading] = useState(!isFetched);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   
-  const [lastVisible, setLastVisible] = useState(null);
+  const lastVisibleRef = useRef(null);
   const [hasMore, setHasMore] = useState(true);
 
-  // 🚀 FETCH INICIAL
-  const fetchAnimals = useCallback(async () => {
+  const fetchAnimals = useCallback(async (forceRefresh = false) => {
+    // Si ya tenemos datos y no forzamos refresco, no hacemos nada
+    if (isFetched && !forceRefresh) return;
+
     try {
       setLoading(true);
       const { data, lastVisible: nextVisible } = await animalService.getPaginated({
         limitCount: 8,
       });
 
-      setAnimals(data || []);
-      setLastVisible(nextVisible);
+      cachedAnimals = data || [];
+      setAnimals(cachedAnimals);
+      lastVisibleRef.current = nextVisible;
       setHasMore(!!nextVisible && data.length === 8);
+      isFetched = true;
       setError(null);
     } catch (err) {
-      console.error("Error en fetchAnimals:", err);
       setError(err?.message || "Error cargando animales");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // 🚀 CARGAR MÁS
   const loadMore = useCallback(async () => {
-    if (loadingMore || !hasMore || !lastVisible) return;
+    if (loadingMore || !hasMore || !lastVisibleRef.current) return;
 
     try {
       setLoadingMore(true);
       const { data, lastVisible: nextVisible } = await animalService.getPaginated({
         limitCount: 6,
-        startAfterDoc: lastVisible,
+        startAfterDoc: lastVisibleRef.current,
       });
 
       if (data && data.length > 0) {
-        setAnimals((prev) => [...prev, ...data]);
-        setLastVisible(nextVisible);
+        cachedAnimals = [...cachedAnimals, ...data];
+        setAnimals(cachedAnimals);
+        lastVisibleRef.current = nextVisible;
         setHasMore(!!nextVisible && data.length === 6);
       } else {
         setHasMore(false);
       }
     } catch (err) {
-      console.error("Error en loadMore:", err);
+      console.error(err);
     } finally {
       setLoadingMore(false);
     }
-  }, [loadingMore, hasMore, lastVisible]);
+  }, [loadingMore, hasMore]);
 
+  // CORRECCIÓN: Usamos useEffect para disparar la carga inicial de forma segura
   useEffect(() => {
-    fetchAnimals();
+    if (!isFetched) {
+      fetchAnimals();
+    }
   }, [fetchAnimals]);
 
   return {
@@ -67,7 +74,7 @@ export function useAnimals() { // Export nombrado
     loading,
     loadingMore,
     error,
-    refresh: fetchAnimals,
+    refresh: () => fetchAnimals(true),
     loadMore,
     hasMore,
   };

@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import { useAnimals } from "../hooks/useAnimals";
 import { authService } from "../services/authService";
+import { animalService } from "../services/animalService"; // Asegúrate de tener esta importación
 import { useNavigate } from "react-router-dom";
-import Button from "../components/ui/Button";
-import Loader from "../components/ui/Loader";
 import Modal from "../components/ui/Modal";
+import Loader from "../components/ui/Loader";
 import AnimalForm from "../admin/AnimalForm";
 import AnimalTable from "../admin/AnimalTable";
 import { Plus, LogOut, PawPrint, LayoutDashboard, Settings, Menu, X, Search } from "lucide-react";
@@ -16,13 +16,9 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAnimal, setEditingAnimal] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  // ESTADO SOLO PARA EL BUSCADOR
   const [searchTerm, setSearchTerm] = useState("");
-
   const navigate = useNavigate();
 
-  // FILTRADO POR NOMBRE
   const filteredAnimals = useMemo(() => {
     return animals.filter((animal) => 
       animal.nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -36,6 +32,17 @@ export default function Dashboard() {
       navigate("/");
     } catch (e) {
       toast.error("Error al cerrar sesión");
+    }
+  };
+
+  const handleDelete = async (animal) => {
+    try {
+      await animalService.delete(animal.id);
+      toast.success("Animal eliminado correctamente");
+      refresh(); // Recarga la lista tras borrar
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Error al eliminar el animal");
     }
   };
 
@@ -87,7 +94,6 @@ export default function Dashboard() {
           </button>
         </header>
 
-        {/* SOLO BUSCADOR */}
         <section className="mb-8 relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-primary transition-colors w-5 h-5" />
           <input 
@@ -99,7 +105,6 @@ export default function Dashboard() {
           />
         </section>
 
-        {/* CONTENIDO PRINCIPAL */}
         {loading ? (
           <div className="w-full h-64 flex flex-col items-center justify-center"><Loader size="lg" /></div>
         ) : (
@@ -108,7 +113,7 @@ export default function Dashboard() {
               <AnimalTable 
                 animals={filteredAnimals} 
                 onEdit={(a) => { setEditingAnimal(a); setIsModalOpen(true); }} 
-                onDelete={(id, url) => {/* Lógica de borrar */}} 
+                onDelete={handleDelete} 
               />
             ) : (
               <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
@@ -118,7 +123,6 @@ export default function Dashboard() {
           </motion.div>
         )}
 
-        {/* FAB MÓVIL */}
         <button onClick={() => { setEditingAnimal(null); setIsModalOpen(true); }} className="md:hidden fixed bottom-8 right-6 w-16 h-16 bg-brand-primary text-white rounded-full shadow-2xl flex items-center justify-center z-30 active:scale-90 transition-transform">
           <Plus className="w-8 h-8" />
         </button>
