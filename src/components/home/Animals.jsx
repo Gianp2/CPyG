@@ -68,31 +68,35 @@ const AdoptionButton = () => (
 export default function Animals() {
   const { animals, loading } = useAnimals();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterSize, setFilterSize] = useState("Todos");
+  const [filterSize, setFilterSize] = useState(null); // Cambiado a null por defecto
   const [visibleCount, setVisibleCount] = useState(8);
 
   const filteredAnimals = useMemo(() => {
     const search = searchTerm.toLowerCase();
     return animals.filter((animal) => {
       const matchesSearch = animal.nombre?.toLowerCase().includes(search);
-      const matchesSize = filterSize === "Todos" || animal.tamaño === filterSize;
+      // Si filterSize es null, se muestran todos
+      const matchesSize = filterSize === null || animal.tamaño === filterSize;
       return matchesSearch && matchesSize;
     });
   }, [animals, searchTerm, filterSize]);
 
   const displayedAnimals = filteredAnimals.slice(0, visibleCount);
 
+  // Función para alternar el filtro
+  const handleFilterClick = (size) => {
+    setFilterSize(prev => prev === size ? null : size);
+  };
+
   return (
     <section id="animals" className="py-10 md:py-20 bg-brand-bg/10" aria-labelledby="animals-title">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Encabezado y filtros mejorados */}
         <div className="mb-12 text-center">
           <h2 id="animals-title" className="text-3xl md:text-5xl font-serif text-brand-dark mb-8">
             Ellos esperan por vos
           </h2>
           
           <div className="flex flex-col gap-6 items-center">
-            {/* Barra de búsqueda */}
             <div className="relative w-full max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
@@ -104,21 +108,23 @@ export default function Animals() {
               />
             </div>
 
-            {/* Filtros como botones */}
-            <div className="flex flex-wrap justify-center gap-2">
-              {["Todos", "Pequeño", "Mediano", "Grande"].map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setFilterSize(size)}
-                  className={`px-5 py-2 rounded-full font-bold transition-all border ${
-                    filterSize === size
-                      ? "bg-brand-primary text-white border-brand-primary shadow-md"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+            {/* Contenedor de filtros sin "Todos" */}
+            <div className="w-full overflow-x-auto py-2 scrollbar-hide">
+              <div className="flex flex-row justify-start md:justify-center gap-2 min-w-max px-2">
+                {["Pequeño", "Mediano", "Grande"].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => handleFilterClick(size)}
+                    className={`px-5 py-2 rounded-full font-bold transition-all border whitespace-nowrap ${
+                      filterSize === size
+                        ? "bg-brand-primary text-white border-brand-primary shadow-md"
+                        : "bg-white text-slate-600 border-slate-200 hover:border-brand-primary hover:text-brand-primary"
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
