@@ -1,16 +1,5 @@
 import { memo, useState, useEffect } from "react";
 
-const getStatusStyles = (status) => {
-  switch (status) {
-    case "En adopción":
-      return "bg-emerald-50 text-emerald-700 border border-emerald-200";
-    case "Adoptado":
-      return "bg-slate-100 text-slate-500 border border-slate-200";
-    default:
-      return "bg-[#E9EDC9] text-[#588157] border border-[#CCD5AE]";
-  }
-};
-
 function AnimalCard({ animal }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -32,26 +21,26 @@ function AnimalCard({ animal }) {
     animal.foto ||
     "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80";
 
-      const whatsappLink = `https://wa.me/5493471347911?text=${encodeURIComponent(
-          `Hola, me interesa adoptar a "${animal.nombre}"
+  const whatsappLink = `https://wa.me/5493471347911?text=${encodeURIComponent(
+    `Hola, me interesa adoptar a "${animal.nombre}"
 
-      FORMULARIO DE ADOPCIÓN RESPONSABLE
+FORMULARIO DE ADOPCIÓN RESPONSABLE
 
-      Necesitamos que nos envíes estos datos en un mensaje:
+Necesitamos que nos envíes estos datos en un mensaje:
 
-      Nombre y Apellido:
-      Dirección y Localidad:
-      Celular o Redes de Contacto: 
+Nombre y Apellido:
+Dirección y Localidad:
+Celular o Redes de Contacto:
 
-      Sobre el cuidado del animal
-      ¿Tenés otros animales?
-      Cantidad, qué son y si están castrados.
+Sobre el cuidado del animal
+¿Tenés otros animales?
+Cantidad, qué son y si están castrados.
 
-      ¿Tu patio está cerrado?
-      En días de frío o calor, ¿los tendrías adentro o con comodidades?
+¿Tu patio está cerrado?
+En días de frío o calor, ¿los tendrías adentro o con comodidades?
 
-      ¿Brindarías atención veterinaria cuando lo necesite?`
-        )}`;
+¿Brindarías atención veterinaria cuando lo necesite?`
+  )}`;
 
   return (
     <>
@@ -66,16 +55,6 @@ function AnimalCard({ animal }) {
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-          <div className="absolute top-4 left-4">
-            <span
-              className={`px-3 py-1 rounded-full text-[11px] font-semibold ${getStatusStyles(
-                animal.estado
-              )}`}
-            >
-              {animal.estado}
-            </span>
-          </div>
         </div>
 
         <div className="p-5 flex flex-col flex-1">
@@ -106,7 +85,7 @@ function AnimalCard({ animal }) {
             onClick={(e) => e.stopPropagation()}
             className="relative bg-white w-full max-w-3xl rounded-[32px] overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
           >
-            {/* BOTÓN CERRAR - Mejorado */}
+            {/* BOTÓN CERRAR */}
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-6 right-6 z-30 w-11 h-11 rounded-2xl bg-white shadow-lg flex items-center justify-center text-slate-600 hover:text-slate-900 hover:scale-110 transition-all duration-200 hover:shadow-xl border border-slate-100"
@@ -128,7 +107,6 @@ function AnimalCard({ animal }) {
                   />
                 </div>
 
-                {/* Capa para suavizar el desenfoque */}
                 <div className="absolute inset-0 bg-black/10" />
 
                 {/* Imagen principal */}
@@ -142,14 +120,6 @@ function AnimalCard({ animal }) {
 
                 {/* Información */}
                 <div className="absolute bottom-6 left-6 z-10">
-                  <span
-                    className={`inline-flex px-3 py-1 rounded-full text-xs font-medium mb-3 ${getStatusStyles(
-                      animal.estado
-                    )}`}
-                  >
-                    {animal.estado}
-                  </span>
-
                   <h2 className="text-4xl font-bold text-white drop-shadow-lg">
                     {animal.nombre}
                   </h2>

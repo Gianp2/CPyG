@@ -36,9 +36,11 @@ export default function About() {
   const ABOUT_IMAGES = [
     { url: "nosotros.jpeg", alt: "Voluntarios trabajando en Armstrong" },
     { url: "nosotros1.jpeg", alt: "Rescatados de la agrupación" },
+    { url: "nosotros6.jpeg", alt: "Labor comunitaria en Armstrong" },
     { url: "nosotros2.jpeg", alt: "Labor comunitaria en Armstrong" },
     { url: "nosotros5.jpeg", alt: "Labor comunitaria en Armstrong" },
-    { url: "nosotros4.jpeg", alt: "Labor comunitaria en Armstrong" },
+    { url: "nosotros7.jpeg", alt: "Labor comunitaria en Armstrong" },
+
   ];
 
   const nextSlide = () => {

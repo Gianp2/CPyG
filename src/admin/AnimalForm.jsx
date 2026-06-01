@@ -11,7 +11,6 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     edad: "",
     tamaño: "Mediano",
     descripcion: "",
-    estado: "En adopción",
   });
 
   const [preview, setPreview] = useState(null);
@@ -26,7 +25,6 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
         edad: editingAnimal.edad || "",
         tamaño: editingAnimal.tamaño || "Mediano",
         descripcion: editingAnimal.descripcion || "",
-        estado: editingAnimal.estado || "En adopción",
       });
       setPreview(editingAnimal.imagenURL || null);
     }
@@ -64,7 +62,6 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
           edad: "",
           tamaño: "Mediano",
           descripcion: "",
-          estado: "En adopción",
         });
         setPreview(null);
         setSelectedFile(null);
@@ -112,8 +109,8 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     }
   };
 
-  const inputClasses = "w-full px-6 py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-brand-accent/30 outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all placeholder:text-slate-400 text-slate-900 shadow-sm";
-
+const inputClasses =
+  "w-full px-4 md:px-6 py-3 md:py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-brand-accent/30 outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all placeholder:text-slate-400 text-slate-900 shadow-sm";
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Foto */}
@@ -138,38 +135,59 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
         </div>
       </div>
 
-      {/* Inputs */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
+      {/* Nombre y Edad */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">        <div className="space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Nombre</label>
-          <input type="text" required placeholder="Ej: Luna" className={inputClasses} value={formData.nombre} onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} />
+          <input 
+            type="text" 
+            required 
+            placeholder="Ej: Luna" 
+            className={inputClasses} 
+            value={formData.nombre} 
+            onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} 
+          />
         </div>
         <div className="space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Edad</label>
-          <input type="text" required placeholder="Ej: 2 años" className={inputClasses} value={formData.edad} onChange={(e) => setFormData({ ...formData, edad: e.target.value })} />
+          <input 
+            type="text" 
+            required 
+            placeholder="Ej: 2 años" 
+            className={inputClasses} 
+            value={formData.edad} 
+            onChange={(e) => setFormData({ ...formData, edad: e.target.value })} 
+          />
         </div>
       </div>
 
-      {/* Tamaño y Estado */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
+      {/* Tamaño - Centrado */}
+      <div className="flex justify-center">
+        <div className="w-full max-w-md space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Tamaño</label>
-          <select className={inputClasses} value={formData.tamaño} onChange={(e) => setFormData({ ...formData, tamaño: e.target.value })}>
+          <select 
+            className={inputClasses} 
+            value={formData.tamaño} 
+            onChange={(e) => setFormData({ ...formData, tamaño: e.target.value })}
+          >
             <option value="Pequeño">Pequeño</option>
             <option value="Mediano">Mediano</option>
             <option value="Grande">Grande</option>
           </select>
-        </div>
-        <div className="space-y-2">
-          <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Estado</label>
-          <div className={`${inputClasses} bg-brand-primary/10 text-brand-primary font-black flex items-center`}>🐾 En adopción</div>
         </div>
       </div>
 
       {/* Descripción */}
       <div className="space-y-2">
         <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Personalidad</label>
-        <textarea required rows="4" maxLength={500} placeholder="Contá cómo es el animal..." className={`${inputClasses} resize-none`} value={formData.descripcion} onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })} />
+        <textarea 
+          required 
+          rows="4" 
+          maxLength={500} 
+          placeholder="Contá cómo es el animal..." 
+          className={`${inputClasses} resize-none`} 
+          value={formData.descripcion} 
+          onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })} 
+        />
       </div>
 
       {/* Botones */}

@@ -2,41 +2,152 @@ import { useMemo, useState } from "react";
 import useAnimals from "../../hooks/useAnimals";
 import AnimalCard from "./AnimalCard";
 import AnimalSkeleton from "../ui/AnimalSkeleton";
-import { Search, ExternalLink, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
+import {
+  Search,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  AlertCircle,
+} from "lucide-react";
 
 const Requirements = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 mb-6 px-4">
+    <div className="max-w-5xl mx-auto mt-16 mb-10 px-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 bg-white border border-brand-primary/20 rounded-xl font-bold text-brand-dark hover:border-brand-primary transition-all shadow-sm"
+        className="w-full flex items-center justify-between p-5 bg-white border border-brand-primary/20 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
       >
-        <span>Requisitos</span>
-        {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+        {/* Contenido centrado */}
+        <div className="flex-1 flex items-center justify-center gap-3">
+          <span className="text-2xl">📋</span>
+          <span className="text-xl font-bold text-brand-dark">
+            Requisitos para adoptar
+          </span>
+        </div>
+
+        {/* Chevron a la derecha */}
+        {isOpen ? (
+          <ChevronUp className="w-5 h-5 text-brand-primary" />
+        ) : (
+          <ChevronDown className="w-5 h-5 text-brand-primary" />
+        )}
       </button>
 
       {isOpen && (
-        <div className="mt-2 p-6 bg-white border border-brand-primary/10 rounded-xl shadow-lg text-slate-600 animate-in fade-in slide-in-from-top-2">
-          <ul className="space-y-3 mb-6">
-            <li className="flex items-start gap-2"><span>🏠</span> <strong>Patio cerrado</strong></li>
-            <li className="flex items-start gap-2"><span>💉</span> <strong>Vacunación anual</strong></li>
-            <li className="ml-6 space-y-1 text-sm">
-              <p>🐶 <strong>Perros:</strong> Séxtuple + Antirrábica</p>
-              <p>🐱 <strong>Gatos:</strong> Triple felina + Antirrábica</p>
-              <p>🐾 <strong>Cachorros:</strong> Vacunas adicionales (Puppy y otras) según criterio del veterinario.</p>
-            </li>
-          </ul>
-          
-          <div className="pt-4 border-t border-slate-100">
-            <p className="font-bold text-brand-dark mb-2">📌 Condición indispensable</p>
-            <p className="mb-2">Compromiso de castración a la edad correspondiente.</p>
-            <p className="text-sm text-slate-500 italic">Te pasamos el turno en Veterinaria El Estribo, San Jorge o El Palenque, a elección.</p>
-            <ul className="mt-3 space-y-1 text-sm text-brand-primary">
-              <li className="flex items-center gap-2">✔️ Castraciones gratuitas para perros, perras, gatos y gatas.</li>
-              <li className="flex items-center gap-2">✔️ O en alguna de las 5 castraciones masivas.</li>
-            </ul>
+        <div className="mt-5 animate-in fade-in slide-in-from-top-2 duration-300">
+          {/* Cards principales */}
+          <div className="grid md:grid-cols-2 gap-5 mb-6">
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all">
+              <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-brand-primary/10 text-3xl mb-4">
+                🏠
+              </div>
+
+              <h3 className="text-lg font-bold text-brand-dark mb-2">
+                Hogar seguro
+              </h3>
+
+              <p className="text-slate-600 leading-relaxed">
+                El animal debe contar con un patio cerrado o un espacio seguro
+                para evitar accidentes y garantizar su bienestar.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all">
+              <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-brand-primary/10 text-3xl mb-4">
+                💉
+              </div>
+
+              <h3 className="text-lg font-bold text-brand-dark mb-2">
+                Vacunación al día
+              </h3>
+
+              <p className="text-slate-600 leading-relaxed">
+                Es fundamental mantener el calendario de vacunación actualizado
+                durante toda la vida del animal.
+              </p>
+            </div>
+          </div>
+
+          {/* Vacunas */}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm mb-6">
+            <h3 className="text-xl font-bold text-brand-dark mb-6 text-center">
+              Calendario de vacunación
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                <div className="text-4xl mb-3">🐶</div>
+                <h4 className="font-bold text-brand-dark mb-2">Perros</h4>
+                <p className="text-sm text-slate-600">
+                  Vacuna Séxtuple y Antirrábica anual.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                <div className="text-4xl mb-3">🐱</div>
+                <h4 className="font-bold text-brand-dark mb-2">Gatos</h4>
+                <p className="text-sm text-slate-600">
+                  Triple Felina y Antirrábica anual.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
+                <div className="text-4xl mb-3">🐾</div>
+                <h4 className="font-bold text-brand-dark mb-2">Cachorros</h4>
+                <p className="text-sm text-slate-600">
+                  Vacunas adicionales según criterio veterinario.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Castración */}
+          <div className="rounded-[32px] overflow-hidden shadow-lg">
+            <div className="bg-gradient-to-r from-[#588157] to-[#6E9B62] p-8 text-white">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">📌</span>
+                <h3 className="text-2xl font-bold">Condición indispensable</h3>
+              </div>
+
+              <p className="text-lg text-white/95 mb-6">
+                Compromiso de realizar la castración a la edad correspondiente.
+              </p>
+
+              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+                <ul className="space-y-4">
+                  <li className="flex gap-3 items-start">
+                    <span className="text-xl">✔️</span>
+                    <span>
+                      Turnos disponibles en Veterinaria El Estribo, San Jorge o
+                      El Palenque.
+                    </span>
+                  </li>
+
+                  <li className="flex gap-3 items-start">
+                    <span className="text-xl">✔️</span>
+                    <span>
+                      Castraciones gratuitas para perros, perras, gatos y
+                      gatas.
+                    </span>
+                  </li>
+
+                  <li className="flex gap-3 items-start">
+                    <span className="text-xl">✔️</span>
+                    <span>
+                      También podés acceder a cualquiera de las jornadas
+                      masivas de castración.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <p className="mt-6 text-sm text-white/80 text-center">
+                ❤️ Adoptar implica compromiso, responsabilidad y amor para toda
+                la vida.
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -122,25 +233,46 @@ export default function Animals() {
           </div>
         </div>
 
-        {/* Carrusel 2x2 con Scroll Horizontal */}
-        <div className="w-full overflow-x-auto pb-8 scroll-smooth scrollbar-hide">
-          <div className="grid grid-rows-2 grid-flow-col gap-4 w-max px-4">
+        {/* MOBILE: Carrusel horizontal */}
+        <div className="md:hidden w-full overflow-x-auto pb-8 scroll-smooth scrollbar-hide">
+          <div className="grid grid-rows-2 grid-flow-col gap-4 w-max px-2">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="w-[170px] md:w-[280px]">
+                <div key={i} className="w-[170px]">
                   <AnimalSkeleton />
                 </div>
               ))
             ) : filteredAnimals.length > 0 ? (
               filteredAnimals.map((animal) => (
-                <div key={animal.id} className="w-[170px] md:w-[280px]">
+                <div key={animal.id} className="w-[170px]">
                   <AnimalCard animal={animal} />
                 </div>
               ))
             ) : (
-              <p className="text-center text-slate-500 py-10 w-full col-span-2">No hay animalitos con esos filtros.</p>
+              <p className="text-center text-slate-500 py-10">
+                No hay animalitos con esos filtros.
+              </p>
             )}
           </div>
+        </div>
+
+        {/* TABLET Y PC: Grid normal */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {loading ? (
+            Array.from({ length: 8 }).map((_, i) => (
+              <AnimalSkeleton key={i} />
+            ))
+          ) : filteredAnimals.length > 0 ? (
+            filteredAnimals.map((animal) => (
+              <AnimalCard key={animal.id} animal={animal} />
+            ))
+          ) : (
+            <div className="col-span-full">
+              <p className="text-center text-slate-500 py-10">
+                No hay animalitos con esos filtros.
+              </p>
+            </div>
+          )}
         </div>
 
         <Requirements />
