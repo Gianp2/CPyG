@@ -146,7 +146,7 @@ const Requirements = () => {
               </div>
 
               <p className="mt-6 text-sm text-white/80 text-center">
-                ❤️ Adoptar implica compromiso, responsabilidad y amor para toda
+                ❤ Adoptar implica compromiso, responsabilidad y amor para toda
                 la vida.
               </p>
             </div>
