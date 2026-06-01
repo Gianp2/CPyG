@@ -38,73 +38,102 @@ const Requirements = () => {
       {isOpen && (
         <div className="mt-5 animate-in fade-in slide-in-from-top-2 duration-300">
 
-          {/* Cards principales */}
-            <div className="flex flex-col items-center gap-5 mb-6">
-              <div className="grid md:grid-cols-2 gap-5 w-full max-w-4xl">
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
-                  <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-brand-primary/10 text-3xl mb-4">
-                    🏠
-                  </div>
+        {/* Cards principales */}
+        <div className="flex flex-col items-center gap-5 mb-6">
+          <div className="grid md:grid-cols-2 gap-5 w-full max-w-4xl">
 
-                  <h3 className="text-lg font-bold text-brand-dark mb-2">
-                    Hogar seguro
-                  </h3>
-
-                  <p className="text-slate-600 leading-relaxed">
-                    El animal debe contar con un patio cerrado o un espacio seguro
-                    para evitar accidentes y garantizar su bienestar.
-                  </p>
-                </div>
-
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
-                  <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-brand-primary/10 text-3xl mb-4">
-                    💉
-                  </div>
-
-                  <h3 className="text-lg font-bold text-brand-dark mb-2">
-                    Vacunación al día
-                  </h3>
-
-                  <p className="text-slate-600 leading-relaxed">
-                    Es fundamental mantener el calendario de vacunación actualizado
-                    durante toda la vida del animal.
-                  </p>
-                </div>
+            {/* Hogar seguro */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
+              <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-brand-primary/10 mb-4">
+                <img
+                  src="/casa.png"
+                  alt="Hogar seguro"
+                  className="w-12 h-12 object-contain"
+                />
               </div>
-            </div>
 
-            {/* Vacunas */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm mb-6 flex flex-col items-center">
-              <h3 className="text-xl font-bold text-brand-dark mb-6 text-center">
-                Calendario de vacunación
+              <h3 className="text-lg font-bold text-brand-dark mb-2">
+                Hogar seguro
               </h3>
 
-              <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                  <div className="text-4xl mb-3">🐶</div>
-                  <h4 className="font-bold text-brand-dark mb-2">Perros</h4>
-                  <p className="text-sm text-slate-600">
-                    Vacuna Séxtuple y Antirrábica anual.
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                  <div className="text-4xl mb-3">🐱</div>
-                  <h4 className="font-bold text-brand-dark mb-2">Gatos</h4>
-                  <p className="text-sm text-slate-600">
-                    Triple Felina y Antirrábica anual.
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                  <div className="text-4xl mb-3">🐾</div>
-                  <h4 className="font-bold text-brand-dark mb-2">Cachorros</h4>
-                  <p className="text-sm text-slate-600">
-                    Vacunas adicionales según criterio veterinario.
-                  </p>
-                </div>
-              </div>
+              <p className="text-slate-600 leading-relaxed">
+                El animal debe contar con un patio cerrado o un espacio seguro
+                para evitar accidentes y garantizar su bienestar.
+              </p>
             </div>
+
+            {/* Vacunación */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
+              <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-brand-primary/10 mb-4">
+                <img
+                  src="/inyeccion.png"
+                  alt="Vacunación"
+                  className="w-12 h-12 object-contain"
+                />
+              </div>
+
+              <h3 className="text-lg font-bold text-brand-dark mb-2">
+                Vacunación al día
+              </h3>
+
+              <p className="text-slate-600 leading-relaxed">
+                Es fundamental mantener el calendario de vacunación actualizado
+                durante toda la vida del animal.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+           {/* Vacunas */}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm mb-6 flex flex-col items-center">
+            <h3 className="text-xl font-bold text-brand-dark mb-6 text-center">
+              Calendario de vacunación
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
+
+              {/* Perros */}
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
+                <img
+                  src="/perro.png"
+                  alt="Perro"
+                  className="w-20 h-20 object-contain mb-3"
+                />
+                <h4 className="font-bold text-brand-dark mb-2">Perros</h4>
+                <p className="text-sm text-slate-600">
+                  Vacuna Séxtuple y Antirrábica anual.
+                </p>
+              </div>
+
+              {/* Gatos */}
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
+                <img
+                  src="/gato.png"
+                  alt="Gato"
+                  className="w-20 h-20 object-contain mb-3"
+                />
+                <h4 className="font-bold text-brand-dark mb-2">Gatos</h4>
+                <p className="text-sm text-slate-600">
+                  Triple Felina y Antirrábica anual.
+                </p>
+              </div>
+
+              {/* Cachorros */}
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
+                <img
+                  src="/cachorro.png"
+                  alt="Cachorro"
+                  className="w-20 h-20 object-contain mb-3"
+                />
+                <h4 className="font-bold text-brand-dark mb-2">Cachorros</h4>
+                <p className="text-sm text-slate-600">
+                  Vacunas adicionales según criterio veterinario.
+                </p>
+              </div>
+
+            </div>
+          </div>
 
           {/* Castración */}
           <div className="rounded-[32px] overflow-hidden shadow-lg">
