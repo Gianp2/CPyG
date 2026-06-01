@@ -16,16 +16,40 @@ const ACTIVITIES = [
 ];
 
 const CAROUSEL_IMAGES = [
-  { url: "feria1.jpeg", title: "Ferias Locales", desc: "Insumos y alimento." },
+  {
+    url: "feria1.jpeg",
+    title: "Ferias Locales",
+    desc: "Cada compra ayuda a cubrir alimento, atención veterinaria y cuidados para los animales rescatados."
+  },
   { url: "feria.jpeg" },
-  { url: "feria2.jpeg", title: "Merchandising", desc: "Productos de nuestra causa." },
+
+  {
+    url: "feria2.jpeg",
+    title: "Merchandising Solidario",
+    desc: "Productos con propósito que colaboran directamente con el sostenimiento del refugio."
+  },
   { url: "feria3.jpeg" },
   { url: "feria4.jpeg" },
   { url: "merch.jpeg" },
-  { url: "feria5.jpeg" },
-  { url: "feriaamericana.jpeg", title: "Feria Americana", desc: "Segunda oportunidad." },
+
+  {
+    url: "feria5.jpeg",
+    title: "Eventos Benéficos",
+    desc: "Espacios de encuentro donde la comunidad se une para ayudar a nuestros rescatados."
+  },
+
+  {
+    url: "feriaamericana.jpeg",
+    title: "Feria Americana",
+    desc: "Ropa y artículos con una segunda oportunidad que generan recursos para seguir rescatando vidas."
+  },
   { url: "feriaamericana1.jpeg" },
-  { url: "retro.jpeg", title: "Fiesta Retro", desc: "Música y solidaridad." }
+
+  {
+    url: "retro.jpeg",
+    title: "Fiesta Retro",
+    desc: "Una noche de música, diversión y solidaridad para apoyar nuestra misión."
+  }
 ];
 
 export default function Donations() {
@@ -80,7 +104,7 @@ export default function Donations() {
                 key={index} 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: index === activeSlide ? 1 : 0 }}
-                transition={{ duration: 0.7 }}
+                transition={{ duration: 0.5 }}
                 className="absolute inset-0"
               >
                 <img src={img.url} alt={img.title || "Actividades"} className="w-full h-full object-cover" />
