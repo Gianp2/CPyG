@@ -202,7 +202,7 @@ export default function Animals() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 id="animals-title" className="text-3xl md:text-5xl font-serif text-brand-dark mb-8">
-            Ellos esperan por vos
+            Ellos esperan por vos...
           </h2>
           
           <div className="flex flex-col gap-6 items-center">
