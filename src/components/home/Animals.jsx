@@ -107,7 +107,6 @@ const Requirements = () => {
           <div className="rounded-[32px] overflow-hidden shadow-lg">
             <div className="bg-gradient-to-r from-[#588157] to-[#6E9B62] p-8 text-white">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl">📌</span>
                 <h3 className="text-2xl font-bold">Condición indispensable</h3>
               </div>
 
