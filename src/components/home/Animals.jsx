@@ -186,31 +186,45 @@ const Requirements = () => {
   );
 };
 
-const AdoptionSection = () => (
-  <div className="mt-16 space-y-8">
-    <div className="p-8 bg-brand-primary/10 rounded-3xl border border-brand-primary/20 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div className="flex gap-4 items-start">
-        <div className="p-3 bg-brand-primary/20 rounded-2xl text-brand-primary">
-          <AlertCircle className="w-8 h-8" />
+const AdoptionSection = () => {
+  // Configuración de contenido para facilitar edición
+  const config = {
+    title: "Denuncia de maltrato animal",
+    description: "Si eres testigo de un caso de maltrato, tu reporte es fundamental para proteger a los animales. Actúa ahora.",
+    buttonText: "Realizar denuncia",
+    formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSczB-o99SY-NIYu4W9C2ZTbWFLkkI9TA2jUvdjmgLqF98brWg/viewform"
+  };
+
+  return (
+    <section className="mt-16 space-y-8" aria-label="Sección de denuncias">
+      <div className="p-6 md:p-8 bg-brand-primary/10 rounded-3xl border border-brand-primary/20 flex flex-col md:flex-row items-center justify-between gap-6 transition-all hover:border-brand-primary/40">
+        
+        {/* Contenido */}
+        <div className="flex gap-4 items-start">
+          <div className="p-3 bg-brand-primary/20 rounded-2xl text-brand-primary shrink-0">
+            <AlertCircle className="w-8 h-8" aria-hidden="true" />
+          </div>
+          <div>
+            <h4 className="text-xl font-bold text-brand-dark">{config.title}</h4>
+            <p className="text-brand-dark/70 text-sm mt-1 max-w-md leading-relaxed">
+              {config.description}
+            </p>
+          </div>
         </div>
-        <div>
-          <h4 className="text-xl font-bold text-brand-dark">Denuncia de maltrato animal</h4>
-          <p className="text-brand-dark/70 text-sm mt-1 max-w-sm">
-            Si eres testigo de un caso de maltrato, tu reporte es fundamental.
-          </p>
-        </div>
+
+        {/* Acción */}
+        <a 
+          href={config.formUrl}
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark active:scale-[0.98] transition-all shadow-md hover:shadow-lg whitespace-nowrap focus:ring-4 focus:ring-brand-primary/20 outline-none"
+        >
+          {config.buttonText}
+        </a>
       </div>
-      <a 
-        href="https://docs.google.com/forms/d/e/1FAIpQLSczB-o99SY-NIYu4W9C2ZTbWFLkkI9TA2jUvdjmgLqF98brWg/viewform?usp=publish-editor" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark transition-all shadow-md whitespace-nowrap"
-      >
-        Realizar denuncia
-      </a>
-    </div>
-  </div>
-);
+    </section>
+  );
+};
 
 export default function Animals() {
   const { animals, loading } = useAnimals();
