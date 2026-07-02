@@ -11,12 +11,20 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     edad: "",
     tamaño: "Mediano",
     descripcion: "",
+    estado: "disponible",        // ← Agregado para evitar undefined
   });
 
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Función para limpiar valores undefined/null antes de enviar a Firestore
+  const cleanObject = (obj) => {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([_, value]) => value !== undefined && value !== null)
+    );
+  };
 
   useEffect(() => {
     if (editingAnimal) {
@@ -25,6 +33,7 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
         edad: editingAnimal.edad || "",
         tamaño: editingAnimal.tamaño || "Mediano",
         descripcion: editingAnimal.descripcion || "",
+        estado: editingAnimal.estado || "disponible",   // ← También al editar
       });
       setPreview(editingAnimal.imagenURL || null);
     }
@@ -50,18 +59,24 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     setLoading(true);
     try {
       const file = selectedFile || (fileInputRef.current?.files[0] || null);
+      
+      // Limpiar datos antes de enviar
+      const dataToSend = cleanObject(formData);
 
       if (editingAnimal) {
-        await animalService.update(editingAnimal.id, formData, file);
+        await animalService.update(editingAnimal.id, dataToSend, file);
         toast.success("¡Cambios guardados con éxito! ✨");
       } else {
-        await animalService.create(formData, file);
+        await animalService.create(dataToSend, file);
         toast.success("¡Bienvenido al refugio! 🐾");
+        
+        // Resetear formulario
         setFormData({
           nombre: "",
           edad: "",
           tamaño: "Mediano",
           descripcion: "",
+          estado: "disponible",
         });
         setPreview(null);
         setSelectedFile(null);
@@ -89,8 +104,18 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
           </div>
         </div>
         <div className="flex gap-3 mt-2">
-          <button onClick={() => { toast.dismiss(t); confirmDeletion(); }} className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors">Sí, eliminar</button>
-          <button onClick={() => toast.dismiss(t)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition-colors">No, volver</button>
+          <button 
+            onClick={() => { toast.dismiss(t); confirmDeletion(); }} 
+            className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors"
+          >
+            Sí, eliminar
+          </button>
+          <button 
+            onClick={() => toast.dismiss(t)} 
+            className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition-colors"
+          >
+            No, volver
+          </button>
         </div>
       </div>
     ), { duration: 6000 });
@@ -109,14 +134,18 @@ export default function AnimalForm({ editingAnimal, onSuccess }) {
     }
   };
 
-const inputClasses =
-  "w-full px-4 md:px-6 py-3 md:py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-brand-accent/30 outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all placeholder:text-slate-400 text-slate-900 shadow-sm";
+  const inputClasses =
+    "w-full px-4 md:px-6 py-3 md:py-4 bg-white/80 backdrop-blur-md rounded-2xl border border-brand-accent/30 outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 transition-all placeholder:text-slate-400 text-slate-900 shadow-sm";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Foto */}
       <div className="space-y-3">
         <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Foto del Animal</label>
-        <div onClick={() => fileInputRef.current?.click()} className="relative group cursor-pointer aspect-video rounded-4xl overflow-hidden border-4 border-dashed border-brand-accent/40 hover:border-brand-primary transition-all duration-300 flex items-center justify-center bg-brand-beige/10 hover:scale-[1.01]">
+        <div 
+          onClick={() => fileInputRef.current?.click()} 
+          className="relative group cursor-pointer aspect-video rounded-4xl overflow-hidden border-4 border-dashed border-brand-accent/40 hover:border-brand-primary transition-all duration-300 flex items-center justify-center bg-brand-beige/10 hover:scale-[1.01]"
+        >
           {preview ? (
             <>
               <img src={preview} className="w-full h-full object-cover" alt="Preview" />
@@ -131,12 +160,19 @@ const inputClasses =
               <span className="text-sm opacity-70">JPG, PNG o WEBP</span>
             </div>
           )}
-          <input type="file" hidden ref={fileInputRef} onChange={handleFileChange} accept="image/*" />
+          <input 
+            type="file" 
+            hidden 
+            ref={fileInputRef} 
+            onChange={handleFileChange} 
+            accept="image/*" 
+          />
         </div>
       </div>
 
       {/* Nombre y Edad */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">        <div className="space-y-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Nombre</label>
           <input 
             type="text" 
@@ -160,7 +196,7 @@ const inputClasses =
         </div>
       </div>
 
-      {/* Tamaño - Centrado */}
+      {/* Tamaño */}
       <div className="flex justify-center">
         <div className="w-full max-w-md space-y-2">
           <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">Tamaño</label>
@@ -192,11 +228,21 @@ const inputClasses =
 
       {/* Botones */}
       <div className="flex flex-col gap-4">
-        <Button type="submit" disabled={loading} className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl">
+        <Button 
+          type="submit" 
+          disabled={loading} 
+          className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl"
+        >
           {loading ? <Loader /> : <><Save className="w-5 h-5" /> {editingAnimal ? "Guardar Cambios" : "Crear Ficha"}</>}
         </Button>
+        
         {editingAnimal && (
-          <Button type="button" onClick={handleDelete} disabled={loading} className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl bg-red-50/50 hover:bg-red-100 text-red-600 border border-red-200 transition-colors shadow-none">
+          <Button 
+            type="button" 
+            onClick={handleDelete} 
+            disabled={loading} 
+            className="w-full py-5 text-lg font-black flex justify-center items-center gap-3 rounded-2xl bg-red-50/50 hover:bg-red-100 text-red-600 border border-red-200 transition-colors shadow-none"
+          >
             <Trash2 className="w-5 h-5" /> Eliminar Animal
           </Button>
         )}

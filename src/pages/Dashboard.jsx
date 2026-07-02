@@ -53,7 +53,7 @@ export default function Dashboard() {
         background: "radial-gradient(circle at center, #2d4a2d 0%, #0a0e0a 100%)" 
       }}
     >
-      {/* Textura de puntos sutil (igual que en login) */}
+      {/* Textura de puntos sutil */}
       <div 
         className="absolute inset-0 opacity-10 pointer-events-none" 
         style={{ 
@@ -77,14 +77,13 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* SIDEBAR - Adaptado a tema oscuro */}
+      {/* SIDEBAR */}
       <aside 
         className={`fixed top-0 right-0 z-[80] h-full w-[280px] p-4 transition-transform duration-300 ease-in-out transform ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         } md:translate-x-0 md:static md:h-screen md:w-80`}
       >
         <div className="h-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-[2rem] p-6 flex flex-col relative overflow-hidden">
-          
           <button 
             onClick={() => setIsMobileMenuOpen(false)} 
             className="md:hidden absolute top-6 left-6 p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors"
@@ -120,7 +119,7 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      {/* Overlay */}
+      {/* Overlay móvil */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div 
@@ -164,7 +163,13 @@ export default function Dashboard() {
             <Loader size="lg" />
           </div>
         ) : (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          // === REFACTORIZACIÓN PRINCIPAL CON LAYOUT ===
+          <motion.div 
+            layout 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 0.3 }}
+          >
             {filteredAnimals.length > 0 ? (
               <AnimalTable 
                 animals={filteredAnimals} 
@@ -172,9 +177,13 @@ export default function Dashboard() {
                 onDelete={handleDelete} 
               />
             ) : (
-              <div className="text-center py-20 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10">
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }}
+                className="text-center py-20 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10"
+              >
                 <p className="text-white/60 font-bold italic">No hay resultados para "{searchTerm}"</p>
-              </div>
+              </motion.div>
             )}
           </motion.div>
         )}
