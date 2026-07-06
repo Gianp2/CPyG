@@ -1,7 +1,28 @@
 import { Edit2, Trash2, Calendar, PawPrint } from "lucide-react";
 import { formatDate } from "../lib/utils";
+import Swal from 'sweetalert2';
 
 export default function AnimalTable({ animals, onEdit, onDelete }) {
+  const handleDelete = (animal) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Al eliminar a ${animal.nombre}, los datos no podrán recuperarse.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444', // red-500
+      cancelButtonColor: '#94a3b8', // slate-400
+      confirmButtonText: 'Sí, borrar',
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'rounded-3xl',
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onDelete(animal);
+      }
+    });
+  };
+
   if (animals.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 px-6 text-center">
@@ -23,7 +44,11 @@ export default function AnimalTable({ animals, onEdit, onDelete }) {
           <div key={animal.id} className="bg-white border border-slate-100 rounded-3xl p-4 shadow-sm active:scale-[0.98] transition-transform">
             <div className="flex gap-4 items-start mb-4">
               <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-inner shrink-0">
-                <img src={animal.imagenURL || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200"} className="w-full h-full object-cover" alt={animal.nombre} />
+                <img 
+                  src={animal.imagenURL || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200"} 
+                  className="w-full h-full object-cover" 
+                  alt={animal.nombre} 
+                />
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start">
@@ -40,10 +65,16 @@ export default function AnimalTable({ animals, onEdit, onDelete }) {
               </div>
             </div>
             <div className="flex gap-2 border-t border-slate-50 pt-3">
-              <button onClick={() => onEdit(animal)} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-50 text-slate-600 rounded-xl font-bold text-sm hover:bg-brand-beige transition-colors">
+              <button 
+                onClick={() => onEdit(animal)} 
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-50 text-slate-600 rounded-xl font-bold text-sm hover:bg-brand-beige transition-colors"
+              >
                 <Edit2 className="w-4 h-4" /> Editar
               </button>
-              <button onClick={() => onDelete(animal)} className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-50 text-red-500 rounded-xl font-bold text-sm hover:bg-red-100 transition-colors">
+              <button 
+                onClick={() => handleDelete(animal)} 
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-50 text-red-500 rounded-xl font-bold text-sm hover:bg-red-100 transition-colors"
+              >
                 <Trash2 className="w-4 h-4" /> Borrar
               </button>
             </div>
@@ -68,7 +99,11 @@ export default function AnimalTable({ animals, onEdit, onDelete }) {
                 <td className="py-5 pl-8">
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-300">
-                      <img src={animal.imagenURL || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200"} className="w-full h-full object-cover" alt={animal.nombre} />
+                      <img 
+                        src={animal.imagenURL || "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=200"} 
+                        className="w-full h-full object-cover" 
+                        alt={animal.nombre} 
+                      />
                     </div>
                     <div>
                       <p className="font-black text-slate-800 text-lg leading-tight">{animal.nombre}</p>
@@ -84,10 +119,16 @@ export default function AnimalTable({ animals, onEdit, onDelete }) {
                 <td className="py-5 text-sm text-slate-400 font-semibold italic">{formatDate(animal.fechaCreacion)}</td>
                 <td className="py-5 pr-8 text-right">
                   <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => onEdit(animal)} className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-blue-500 hover:border-blue-200 hover:shadow-sm rounded-xl transition-all">
+                    <button 
+                      onClick={() => onEdit(animal)} 
+                      className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-blue-500 hover:border-blue-200 hover:shadow-sm rounded-xl transition-all"
+                    >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button onClick={() => onDelete(animal)} className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 hover:shadow-sm rounded-xl transition-all">
+                    <button 
+                      onClick={() => handleDelete(animal)} 
+                      className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 hover:shadow-sm rounded-xl transition-all"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

@@ -2,230 +2,130 @@ import { useMemo, useState } from "react";
 import useAnimals from "../../hooks/useAnimals";
 import AnimalCard from "./AnimalCard";
 import AnimalSkeleton from "../ui/AnimalSkeleton";
-import {
-  Search,
-  ExternalLink,
-  ChevronDown,
-  ChevronUp,
-  AlertCircle,
-} from "lucide-react";
+import { Search, ChevronDown, X } from "lucide-react";
 
+// ==================== REQUISITOS PARA ADOPTAR (Modal) ====================
 const Requirements = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="max-w-5xl mx-auto mt-16 mb-10 px-4">
+    <div className="w-full max-w-5xl mx-auto mt-8">
+      {/* Botón disparador */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-5 bg-white border border-brand-primary/20 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
+        onClick={() => setIsOpen(true)}
+        className="w-full flex items-center justify-between p-6 bg-white border-2 border-brand-primary/20 rounded-3xl shadow-sm hover:border-brand-primary hover:shadow-md transition-all duration-300"
       >
-        {/* Contenido centrado */}
-        <div className="flex-1 flex items-center justify-center gap-3">
-          <span className="text-2xl">✎</span>
-          <span className="text-xl font-bold text-brand-dark">
-            Requisitos para adoptar
-          </span>
+        <span className="text-xl font-bold text-brand-dark flex items-center gap-3">
+           Requisitos para adoptar
+        </span>
+        <div className="bg-brand-primary/10 p-2 rounded-full">
+          <ChevronDown className="w-6 h-6 text-brand-primary" />
         </div>
-
-        {/* Chevron a la derecha */}
-        {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-brand-primary" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-brand-primary" />
-        )}
       </button>
 
+      {/* Modal */}
       {isOpen && (
-        <div className="mt-5 animate-in fade-in slide-in-from-top-2 duration-300">
+        <>
+          {/* Fondo oscuro */}
+          <div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" 
+            onClick={() => setIsOpen(false)}
+          />
 
-        {/* Cards principales */}
-        <div className="flex flex-col items-center gap-5 mb-6">
-          <div className="grid md:grid-cols-2 gap-5 w-full max-w-4xl">
+          {/* Card Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-[32px] p-8 md:p-10 max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300">
+              
+              {/* Header */}
+              <div className="flex justify-between items-center mb-8">
+                <div className="flex items-center gap-4">
 
-            {/* Hogar seguro */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
-              <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-brand-primary/10 mb-4">
-                <img
-                  src="/casa.png"
-                  alt="Hogar seguro"
-                  className="w-12 h-12 object-contain"
-                />
+                  <h2 className="text-3xl font-bold text-brand-dark">Requisitos para adoptar</h2>
+                </div>
+                <button 
+                  onClick={() => setIsOpen(false)} 
+                  className="p-3 hover:bg-slate-100 rounded-full transition-colors"
+                >
+                  <X className="w-7 h-7 text-slate-500" />
+                </button>
               </div>
 
-              <h3 className="text-lg font-bold text-brand-dark mb-2">
-                Hogar seguro
-              </h3>
+              {/* Contenido */}
+              <div className="space-y-10">
+                {/* Requisitos principales */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="flex gap-5 p-6 bg-slate-50 rounded-3xl">
+                    <img src="/casa.png" alt="Hogar seguro" className="w-14 h-14 object-contain flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-xl text-brand-dark mb-2">Hogar seguro</h3>
+                      <p className="text-slate-600">
+                        El animal debe contar con un patio cerrado o un espacio seguro para garantizar su bienestar.
+                      </p>
+                    </div>
+                  </div>
 
-              <p className="text-slate-600 leading-relaxed">
-                El animal debe contar con un patio cerrado o un espacio seguro
-                para evitar accidentes y garantizar su bienestar.
-              </p>
-            </div>
+                  <div className="flex gap-5 p-6 bg-slate-50 rounded-3xl">
+                    <img src="/inyeccion.png" alt="Vacunación" className="w-14 h-14 object-contain flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-xl text-brand-dark mb-2">Vacunación al día</h3>
+                      <p className="text-slate-600">
+                        Es fundamental mantener el calendario de vacunación actualizado durante toda la vida del animal.
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Vacunación */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center">
-              <div className="w-20 h-20 flex items-center justify-center rounded-2xl bg-brand-primary/10 mb-4">
-                <img
-                  src="/inyeccion.png"
-                  alt="Vacunación"
-                  className="w-12 h-12 object-contain"
-                />
+                {/* Calendario de vacunación */}
+                <div>
+                  <h3 className="text-2xl font-bold text-brand-dark mb-6 text-center">
+                    Calendario de vacunación
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {[
+                      { icon: "/perro.png", title: "Perros", desc: "Vacuna Séxtuple y Antirrábica anual." },
+                      { icon: "/gato.png", title: "Gatos", desc: "Triple Felina y Antirrábica anual." },
+                      { icon: "/cachorro.png", title: "Cachorros", desc: "Vacunas adicionales según criterio veterinario." }
+                    ].map((item, i) => (
+                      <div key={i} className="bg-slate-50 rounded-3xl p-6 text-center border border-slate-100">
+                        <img src={item.icon} alt={item.title} className="w-20 h-20 mx-auto mb-4 object-contain" />
+                        <h4 className="font-bold text-brand-dark text-lg mb-2">{item.title}</h4>
+                        <p className="text-sm text-slate-600">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Castración */}
+                <div className="bg-gradient-to-r from-[#588157] to-[#6E9B62] rounded-3xl p-8 text-white">
+                  <h3 className="text-2xl font-bold mb-4">Condición indispensable</h3>
+                  <p className="text-lg text-white/90 mb-6">
+                    Compromiso de realizar la castración a la edad correspondiente.
+                  </p>
+                  <ul className="space-y-4">
+                    <li className="flex gap-3 items-start bg-white/10 p-4 rounded-2xl">
+                      ✔ Turnos en Veterinaria El Estribo, San Jorge o El Palenque.
+                    </li>
+                    <li className="flex gap-3 items-start bg-white/10 p-4 rounded-2xl">
+                      ✔ Castraciones gratuitas para perros, perras, gatos y gatas.
+                    </li>
+                    <li className="flex gap-3 items-start bg-white/10 p-4 rounded-2xl">
+                      ✔ Disponibilidad en jornadas masivas de castración.
+                    </li>
+                  </ul>
+                  <p className="mt-8 text-center text-white/80 text-sm">
+                    ❤ Adoptar implica compromiso, responsabilidad y amor para toda la vida.
+                  </p>
+                </div>
               </div>
-
-              <h3 className="text-lg font-bold text-brand-dark mb-2">
-                Vacunación al día
-              </h3>
-
-              <p className="text-slate-600 leading-relaxed">
-                Es fundamental mantener el calendario de vacunación actualizado
-                durante toda la vida del animal.
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-           {/* Vacunas */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm mb-6 flex flex-col items-center">
-            <h3 className="text-xl font-bold text-brand-dark mb-6 text-center">
-              Calendario de vacunación
-            </h3>
-
-            <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
-
-              {/* Perros */}
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                <img
-                  src="/perro.png"
-                  alt="Perro"
-                  className="w-20 h-20 object-contain mb-3"
-                />
-                <h4 className="font-bold text-brand-dark mb-2">Perros</h4>
-                <p className="text-sm text-slate-600">
-                  Vacuna Séxtuple y Antirrábica anual.
-                </p>
-              </div>
-
-              {/* Gatos */}
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                <img
-                  src="/gato.png"
-                  alt="Gato"
-                  className="w-20 h-20 object-contain mb-3"
-                />
-                <h4 className="font-bold text-brand-dark mb-2">Gatos</h4>
-                <p className="text-sm text-slate-600">
-                  Triple Felina y Antirrábica anual.
-                </p>
-              </div>
-
-              {/* Cachorros */}
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 flex flex-col items-center text-center">
-                <img
-                  src="/cachorro.png"
-                  alt="Cachorro"
-                  className="w-20 h-20 object-contain mb-3"
-                />
-                <h4 className="font-bold text-brand-dark mb-2">Cachorros</h4>
-                <p className="text-sm text-slate-600">
-                  Vacunas adicionales según criterio veterinario.
-                </p>
-              </div>
-
             </div>
           </div>
-
-          {/* Castración */}
-          <div className="rounded-[32px] overflow-hidden shadow-lg">
-            <div className="bg-gradient-to-r from-[#588157] to-[#6E9B62] p-8 text-white">
-              <div className="flex items-center gap-3 mb-4">
-                <h3 className="text-2xl font-bold">Condición indispensable</h3>
-              </div>
-
-              <p className="text-lg text-white/95 mb-6">
-                Compromiso de realizar la castración a la edad correspondiente.
-              </p>
-
-              <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
-                <ul className="space-y-4">
-                  <li className="flex gap-3 items-start">
-                    <span className="text-xl">✔</span>
-                    <span>
-                      Turnos disponibles en Veterinaria El Estribo, San Jorge o
-                      El Palenque.
-                    </span>
-                  </li>
-
-                  <li className="flex gap-3 items-start">
-                    <span className="text-xl">✔</span>
-                    <span>
-                      Castraciones gratuitas para perros, perras, gatos y
-                      gatas.
-                    </span>
-                  </li>
-
-                  <li className="flex gap-3 items-start">
-                    <span className="text-xl">✔</span>
-                    <span>
-                      También podés acceder a cualquiera de las jornadas
-                      masivas de castración.
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <p className="mt-6 text-sm text-white/80 text-center">
-                ❤ Adoptar implica compromiso, responsabilidad y amor para toda
-                la vida.
-              </p>
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );
 };
 
-const AdoptionSection = () => {
-  // Configuración de contenido para facilitar edición
-  const config = {
-    title: "Denuncia de maltrato animal",
-    description: "Si eres testigo de un caso de maltrato, tu reporte es fundamental para proteger a los animales. Actúa ahora.",
-    buttonText: "Realizar denuncia",
-    formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSczB-o99SY-NIYu4W9C2ZTbWFLkkI9TA2jUvdjmgLqF98brWg/viewform"
-  };
-
-  return (
-    <section className="mt-16 space-y-8" aria-label="Sección de denuncias">
-      <div className="p-6 md:p-8 bg-brand-primary/10 rounded-3xl border border-brand-primary/20 flex flex-col md:flex-row items-center justify-between gap-6 transition-all hover:border-brand-primary/40">
-        
-        {/* Contenido */}
-        <div className="flex gap-4 items-start">
-          <div className="p-3 bg-brand-primary/20 rounded-2xl text-brand-primary shrink-0">
-            <AlertCircle className="w-8 h-8" aria-hidden="true" />
-          </div>
-          <div>
-            <h4 className="text-xl font-bold text-brand-dark">{config.title}</h4>
-            <p className="text-brand-dark/70 text-sm mt-1 max-w-md leading-relaxed">
-              {config.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Acción */}
-        <a 
-          href={config.formUrl}
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="px-6 py-3 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-dark active:scale-[0.98] transition-all shadow-md hover:shadow-lg whitespace-nowrap focus:ring-4 focus:ring-brand-primary/20 outline-none"
-        >
-          {config.buttonText}
-        </a>
-      </div>
-    </section>
-  );
-};
-
+// ==================== COMPONENTE PRINCIPAL ====================
 export default function Animals() {
   const { animals, loading } = useAnimals();
   const [searchTerm, setSearchTerm] = useState("");
@@ -247,8 +147,9 @@ export default function Animals() {
           <h2 id="animals-title" className="text-3xl md:text-5xl font-serif text-brand-dark mb-8">
             Ellos esperan por vos...
           </h2>
-          
+
           <div className="flex flex-col gap-6 items-center">
+            {/* Buscador */}
             <div className="relative w-full max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
@@ -260,6 +161,7 @@ export default function Animals() {
               />
             </div>
 
+            {/* Pills de tamaño */}
             <div className="flex gap-2">
               {["Pequeño", "Mediano", "Grande"].map((size) => (
                 <button
@@ -275,6 +177,9 @@ export default function Animals() {
                 </button>
               ))}
             </div>
+
+            {/* Requisitos (ahora dentro del bloque principal) */}
+            <Requirements />
           </div>
         </div>
 
@@ -319,9 +224,6 @@ export default function Animals() {
             </div>
           )}
         </div>
-
-        <Requirements />
-        <AdoptionSection />
       </div>
     </section>
   );

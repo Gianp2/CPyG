@@ -21,18 +21,13 @@ const LoadingScreen = () => (
   </div>
 );
 
-// Componente para proteger rutas
 const ProtectedRoute = () => {
   const { user, loading } = useAuth();
-
   if (loading) return <LoadingScreen />;
   if (!user) return <Navigate to="/admin/login" replace />;
-
   return <Outlet />;
 };
 
-// Layout optimizado: El Suspense envuelve al Outlet para que 
-// cualquier cambio de ruta dispare el fallback automáticamente
 const RootLayout = () => (
   <Suspense fallback={<LoadingScreen />}>
     <Outlet />
@@ -44,29 +39,17 @@ export default function AppRouter() {
     createBrowserRouter([
       {
         path: "/",
-        element: <RootLayout />, // Centralizamos el Suspense aquí
+        element: <RootLayout />,
         children: [
+          { index: true, element: <Home /> },
+          { path: "admin/login", element: <AdminLogin /> },
           {
-            index: true,
-            element: <Home />,
-          },
-          {
-            path: "admin/login",
-            element: <AdminLogin />,
-          },
-          {
-            element: <ProtectedRoute />, // Protección de rutas
+            element: <ProtectedRoute />,
             children: [
-              {
-                path: "admin/dashboard",
-                element: <Dashboard />,
-              },
+              { path: "admin/dashboard", element: <Dashboard /> },
             ],
           },
-          {
-            path: "*",
-            element: <NotFound />,
-          },
+          { path: "*", element: <NotFound /> },
         ],
       },
     ]),

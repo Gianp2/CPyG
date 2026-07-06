@@ -1,13 +1,15 @@
 import { lazy, Suspense } from "react";
-import { Helmet } from "react-helmet-async"; // Importamos Helmet
+import { Helmet } from "react-helmet-async";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import Hero from "../components/home/Hero"; 
+import Hero from "../components/home/Hero";
 
+// Lazy imports
 const About = lazy(() => import("../components/home/About"));
 const Animals = lazy(() => import("../components/home/Animals"));
 const Donations = lazy(() => import("../components/home/Donations"));
 const Contact = lazy(() => import("../components/home/Contact"));
+const Denuncias = lazy(() => import("../components/home/Denuncias")); // ← Nuevo
 
 export default function Home() {
   return (
@@ -26,6 +28,10 @@ export default function Home() {
         <Suspense fallback={<div className="h-40" />}>
           <About />
           <Animals />
+          
+          {/* Nueva sección de Denuncias */}
+          <Denuncias />
+
           <Donations />
           <Contact />
         </Suspense>
