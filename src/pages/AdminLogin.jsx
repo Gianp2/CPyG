@@ -141,7 +141,7 @@ export default function AdminLogin() {
         </form>
 
         <p className="text-center mt-10 text-slate-400 text-xs font-medium italic">
-          Protección de datos Como Perros & Gatos &copy; {new Date().getFullYear()}
+            Protección de datos Como Perros & Gatos
         </p>
       </motion.div>
     </div>
