@@ -104,15 +104,27 @@ function AnimalCard({ animal }) {
             </button>
 
             <div className="overflow-y-auto flex-1">
-              {/* Imagen Modal */}
-              <div className="relative bg-slate-950 flex items-center justify-center min-h-[320px] md:min-h-[420px]">
+              {/* Imagen Modal con Efecto Blur */}
+              <div className="relative flex items-center justify-center min-h-[320px] md:min-h-[420px] overflow-hidden">
+                
+                {/* Capa de fondo desenfocada */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-80"
+                  style={{ backgroundImage: `url(${currentImage})` }} 
+                />
+                
+                {/* Capa de oscurecimiento sutil */}
+                <div className="absolute inset-0 bg-black/20" />
+
+                {/* Imagen Principal */}
                 <img
                   src={currentImage}
                   alt={animal.nombre}
-                  className="max-h-[520px] w-auto max-w-full object-contain"
+                  className="relative z-10 max-h-[520px] w-auto max-w-full object-contain drop-shadow-2xl"
                 />
+                
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent h-1/2" />
-                <div className="absolute bottom-8 left-8 right-8">
+                <div className="absolute bottom-8 left-8 right-8 z-20">
                   <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-2xl">
                     {animal.nombre}
                   </h2>
@@ -155,7 +167,7 @@ function AnimalCard({ animal }) {
                   </div>
                 </div>
 
-                {/* Sección de Adopción - Optimizada para celular */}
+                {/* Sección de Adopción */}
                 <div className="bg-gradient-to-br from-[#588157] to-[#6e9b62] rounded-3xl p-6 md:p-9 text-center text-white mx-2 md:mx-0">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
                     ¿Querés adoptar a {animal.nombre}?

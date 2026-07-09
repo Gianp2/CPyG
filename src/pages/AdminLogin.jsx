@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
-import { PawPrint, Lock, Mail, ChevronLeft } from "lucide-react";
+import { PawPrint, Lock, Mail, ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // ← Nuevo estado
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -96,6 +97,7 @@ export default function AdminLogin() {
             </div>
           </div>
 
+          {/* Campo de Contraseña con Visibilidad */}
           <div className="space-y-2">
             <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-4">
               Contraseña
@@ -103,17 +105,29 @@ export default function AdminLogin() {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-600 dark:text-emerald-500" />
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"}
                 required
-                className="w-full pl-12 pr-4 py-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-300 dark:border-slate-700 focus:ring-4 focus:ring-emerald-500/30 outline-none text-slate-800 dark:text-white font-medium transition-all"
+                className="w-full pl-12 pr-14 py-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-300 dark:border-slate-700 focus:ring-4 focus:ring-emerald-500/30 outline-none text-slate-800 dark:text-white font-medium transition-all"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
               />
+              {/* Botón del ojito */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-emerald-600 transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
             </div>
           </div>
 
-          {/* Botón simplificado como pediste */}
+          {/* Botón de Login */}
           <Button
             disabled={loading}
             className="w-full h-[68px] text-lg font-black shadow-lg hover:shadow-emerald-600/30 bg-emerald-700 hover:bg-emerald-600 transition-all flex items-center justify-center"
