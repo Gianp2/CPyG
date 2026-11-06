@@ -1,332 +1,629 @@
-import { useState } from "react";
+
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Search, Scissors, Activity, Sparkles, Building2, Syringe, ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  Search,
+  Scissors,
+  Activity,
+  Sparkles,
+  Building2,
+  Syringe,
+  ArrowLeft,
+  ArrowRight,
+  Phone,
+  PawPrint,
+} from "lucide-react";
+
+/* ===============================
+   INFORMACIÓN GENERAL
+================================ */
 
 const ACTIONS = [
   {
-    icon: <Search className="w-6 h-6" />,
+    icon: Search,
     title: "Rescatar y Proteger",
-    desc: "Los 365 días del año rescatamos animales en situación de abandono (cunetas, campos, basurales y zonas urbanas), madres con crías o casos críticos."
+    desc: "Los 365 días del año rescatamos animales en situación de abandono (cunetas, campos, basurales y zonas urbanas), madres con crías o casos críticos.",
   },
   {
-    icon: <Scissors className="w-6 h-6" />,
+    icon: Scissors,
     title: "Castrar",
-    desc: "Creemos en cortar el problema de raíz. Participamos en 5 campañas masivas anuales y gestionamos turnos gratuitos en veterinarias locales."
+    desc: "Creemos en cortar el problema de raíz. Participamos en 5 campañas masivas anuales y gestionamos turnos gratuitos en veterinarias locales.",
   },
   {
-    icon: <Activity className="w-6 h-6" />,
+    icon: Activity,
     title: "Sanar",
-    desc: "Brindamos primeros auxilios y atención veterinaria a animales heridos, enfermos o en estado crítico, asumiendo su total rehabilitation."
+    desc: "Brindamos primeros auxilios y atención veterinaria a animales heridos, enfermos o en estado crítico, asumiendo su rehabilitación.",
   },
   {
-    icon: <Sparkles className="w-6 h-6" />,
+    icon: Sparkles,
     title: "Adoptar Responsablemente",
-    desc: "Registramos cada adopción bajo compromiso de castración obligatoria para garantizar un futuro seguro y feliz."
+    desc: "Registramos cada adopción bajo compromiso de castración obligatoria para garantizar un futuro seguro y feliz.",
   },
 ];
 
+const ABOUT_IMAGES = [
+  { url: "nosotros.jpeg", alt: "Voluntarios trabajando en Armstrong" },
+  { url: "nosotros1.jpeg", alt: "Rescatados de la agrupación" },
+  { url: "nosotros6.jpeg", alt: "Labor comunitaria en Armstrong" },
+  { url: "nosotros2.jpeg", alt: "Labor comunitaria en Armstrong" },
+  { url: "nosotros5.jpeg", alt: "Labor comunitaria en Armstrong" },
+  { url: "nosotros7.jpeg", alt: "Labor comunitaria en Armstrong" },
+];
+
+const MASS_CONTACTS = [
+  { name: "Eli", number: "3471 62-8767", phone: "3471628767" },
+  { name: "Vicky", number: "3471 59-4581", phone: "3471594581" },
+];
+
+const VET_CONTACTS = [
+  { name: "El Estribo (Eli)", number: "3471 62-8767", phone: "3471628767" },
+  { name: "San Jorge (Agus)", number: "3471 57-0085", phone: "3471570085" },
+  { name: "El Palenque (Luci)", number: "3471 34-7911", phone: "3471347911" },
+  { name: "El Palenque (Luchi)", number: "3471 67-3977", phone: "3471673977" },
+];
+
+/* ===============================
+   FILAS DE CONTACTO
+================================ */
+
+function ContactList({ title, contacts }) {
+  return (
+    <div className="w-full">
+      <h5 className="mb-3 text-center text-[12px] font-semibold text-[#344E41] sm:text-[13px]">
+        {title}
+      </h5>
+
+      <div className="space-y-2">
+        {contacts.map((contact) => (
+          <div
+            key={`${contact.name}-${contact.phone}`}
+            className="
+              flex min-w-0 flex-wrap items-center
+              justify-between gap-x-3 gap-y-1.5
+              rounded-xl bg-[#F6F8F5]
+              px-3.5 py-3
+              transition-colors hover:bg-[#EEF3EC]
+              sm:px-4
+            "
+          >
+            <span className="min-w-0 text-[11px] font-medium text-[#617265] sm:text-xs">
+              {contact.name}
+            </span>
+
+            <a
+              href={`tel:${contact.phone}`}
+              aria-label={`Llamar a ${contact.name} al ${contact.number}`}
+              className="
+                inline-flex shrink-0 items-center gap-1.5
+                text-[11px] font-semibold text-[#588157]
+                transition-colors hover:text-[#344E41]
+                sm:text-xs
+              "
+            >
+              <Phone size={12} strokeWidth={1.8} />
+              {contact.number}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ===============================
+   TARJETA DE CAMPAÑAS
+================================ */
+
+function MassCampaigns() {
+  return (
+    <div className="flex h-full min-w-0 flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="flex flex-col items-center text-center">
+        <div
+          className="
+            mb-3 flex h-11 w-11 items-center justify-center
+            rounded-2xl bg-[#F0F5EB] text-[#588157]
+          "
+        >
+          <Building2 size={21} strokeWidth={1.7} />
+        </div>
+
+        <h4
+          className="
+            mb-3 max-w-[270px] font-serif
+            text-[21px] font-semibold leading-tight
+            text-[#344E41] sm:text-[24px]
+          "
+        >
+          Campañas de Castración Masivas
+        </h4>
+
+        <p className="max-w-[360px] text-[12px] leading-[1.8] text-[#728176] sm:text-[13px]">
+          Colaboramos activamente en{" "}
+          <strong className="font-semibold text-[#344E41]">
+            5 campañas de castración masiva al año
+          </strong>{" "}
+          coordinadas junto a la Municipalidad de Armstrong,
+          garantizando el acceso gratuito para toda la comunidad.
+        </p>
+      </div>
+
+      <div className="mt-auto pt-6">
+        <div className="mb-5 h-px w-full bg-[#E8EDE5]" />
+
+        <ContactList
+          title="Contactos para campañas masivas"
+          contacts={MASS_CONTACTS}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ===============================
+   TARJETA DE VETERINARIAS
+================================ */
+
+function VeterinaryAppointments() {
+  return (
+    <div className="flex h-full min-w-0 flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="flex flex-col items-center text-center">
+        <div
+          className="
+            mb-3 flex h-11 w-11 items-center justify-center
+            rounded-2xl bg-[#F0F5EB] text-[#588157]
+          "
+        >
+          <Syringe size={21} strokeWidth={1.7} />
+        </div>
+
+        <h4
+          className="
+            mb-3 font-serif text-[21px]
+            font-semibold leading-tight
+            text-[#344E41] sm:text-[24px]
+          "
+        >
+          Turnos en Veterinarias
+        </h4>
+
+        <p className="max-w-[360px] text-[12px] leading-[1.8] text-[#728176] sm:text-[13px]">
+          Gestionamos{" "}
+          <strong className="font-semibold text-[#344E41]">
+            30 turnos mensuales gratuitos
+          </strong>{" "}
+          otorgados por el municipio en las veterinarias
+          aliadas de la ciudad.
+        </p>
+
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          {["El Estribo", "San Jorge", "El Palenque"].map((vet) => (
+            <span
+              key={vet}
+              className="
+                rounded-lg border border-[#E8EDE5]
+                bg-[#F6F8F5] px-2.5 py-1.5
+                text-[10px] font-medium text-[#657969]
+              "
+            >
+              {vet}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-auto pt-6">
+        <div className="mb-5 h-px w-full bg-[#E8EDE5]" />
+
+        <ContactList
+          title="Contactos para solicitar turnos"
+          contacts={VET_CONTACTS}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ===============================
+   SECCIÓN DE SALUD PÚBLICA
+================================ */
+
+function PublicHealth() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
+      className="
+        relative mx-auto max-w-[1100px]
+        overflow-hidden rounded-[24px]
+        border border-[#E3E9D9]
+        bg-[#F3F5E8]
+        px-3 py-8
+        sm:rounded-[30px] sm:px-7 sm:py-11
+        lg:px-12 lg:py-14
+      "
+    >
+      {/* ENCABEZADO */}
+      <div className="mx-auto mb-7 max-w-[650px] text-center sm:mb-10">
+        <div className="mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.17em] text-[#588157] sm:text-[11px]">
+          <PawPrint size={14} />
+          Salud pública y prevención
+        </div>
+
+        <h3
+          className="
+            mx-auto mb-4 max-w-[560px]
+            font-serif text-[27px] font-semibold
+            leading-[1.2] tracking-tight
+            text-[#344E41]
+            sm:text-[36px]
+            lg:text-[40px]
+          "
+        >
+          Trabajo en castraciones y concientización
+        </h3>
+
+        <p
+          className="
+            mx-auto max-w-[560px]
+            text-[12px] leading-[1.85]
+            text-[#6E806F]
+            sm:text-[14px]
+          "
+        >
+          Apostamos fuerte a la castración masiva como
+          la herramienta más efectiva para reducir el
+          abandono. No solo actuamos ante la emergencia,
+          también educamos y prevenimos.
+        </p>
+      </div>
+
+      {/* =================================
+          CELULAR:
+          BLOQUE ÚNICO CON DIVISIÓN
+          DESKTOP:
+          DOS TARJETAS INDEPENDIENTES
+      ================================= */}
+
+      <div
+        className="
+          mx-auto grid max-w-[950px]
+          grid-cols-1 overflow-hidden
+          rounded-[22px] border border-[#E5EBDD]
+          bg-white shadow-[0_8px_30px_rgba(52,78,65,0.045)]
+          md:grid-cols-2 md:gap-5
+          md:overflow-visible md:border-0
+          md:bg-transparent md:shadow-none
+        "
+      >
+        {/* CAMPAÑAS */}
+        <div
+          className="
+            min-w-0
+            md:overflow-hidden md:rounded-[22px]
+            md:border md:border-[#E5EBDD]
+            md:bg-white
+            md:shadow-[0_6px_24px_rgba(52,78,65,0.04)]
+          "
+        >
+          <MassCampaigns />
+        </div>
+
+        {/* SEPARADOR MÓVIL */}
+        <div className="mx-5 h-px bg-[#E8EDE5] md:hidden" />
+
+        {/* VETERINARIAS */}
+        <div
+          className="
+            min-w-0
+            md:overflow-hidden md:rounded-[22px]
+            md:border md:border-[#E5EBDD]
+            md:bg-white
+            md:shadow-[0_6px_24px_rgba(52,78,65,0.04)]
+          "
+        >
+          <VeterinaryAppointments />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ===============================
+   COMPONENTE PRINCIPAL
+================================ */
+
 export default function About() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-
-  // Mínima distancia en píxeles para considerar que fue un swapeo válido
-  const minSwipeDistance = 50;
-
-  const ABOUT_IMAGES = [
-    { url: "nosotros.jpeg", alt: "Voluntarios trabajando en Armstrong" },
-    { url: "nosotros1.jpeg", alt: "Rescatados de la agrupación" },
-    { url: "nosotros6.jpeg", alt: "Labor comunitaria en Armstrong" },
-    { url: "nosotros2.jpeg", alt: "Labor comunitaria en Armstrong" },
-    { url: "nosotros5.jpeg", alt: "Labor comunitaria en Armstrong" },
-    { url: "nosotros7.jpeg", alt: "Labor comunitaria en Armstrong" },
-
-  ];
+  const touchStart = useRef(null);
+  const touchEnd = useRef(null);
 
   const nextSlide = () => {
-    setActiveSlide((prev) => (prev === ABOUT_IMAGES.length - 1 ? 0 : prev + 1));
+    setActiveSlide((previous) =>
+      (previous + 1) % ABOUT_IMAGES.length
+    );
   };
 
   const prevSlide = () => {
-    setActiveSlide((prev) => (prev === 0 ? ABOUT_IMAGES.length - 1 : prev - 1));
+    setActiveSlide((previous) =>
+      (previous - 1 + ABOUT_IMAGES.length) %
+      ABOUT_IMAGES.length
+    );
   };
 
-  // Manejo de gestos táctiles idéntico al de Donations
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+  const onTouchStart = (event) => {
+    touchStart.current = event.touches[0].clientX;
+    touchEnd.current = null;
   };
 
-  const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+  const onTouchMove = (event) => {
+    touchEnd.current = event.touches[0].clientX;
   };
 
   const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
+    if (
+      touchStart.current === null ||
+      touchEnd.current === null
+    ) {
+      touchStart.current = null;
+      touchEnd.current = null;
+      return;
     }
+
+    const distance =
+      touchStart.current - touchEnd.current;
+
+    if (Math.abs(distance) > 50) {
+      if (distance > 0) nextSlide();
+      else prevSlide();
+    }
+
+    touchStart.current = null;
+    touchEnd.current = null;
   };
 
   return (
-    <section id="about" className="section-padding bg-transparent overflow-x-hidden w-full space-y-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* COLUMNA IZQUIERDA: CARRUSEL DE IMÁGENES (ESTILO DONATIONS) */}
+    <section
+      id="about"
+      className="
+        w-full overflow-x-hidden
+        bg-transparent
+        py-12 sm:py-16 lg:py-20
+      "
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+
+        {/* =============================
+            PRESENTACIÓN
+        ============================= */}
+        <div
+          className="
+            mb-16 grid grid-cols-1
+            items-center gap-10
+            lg:mb-24 lg:grid-cols-2 lg:gap-14
+          "
+        >
+          {/* CARRUSEL */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-full relative group"
+            transition={{ duration: 0.5 }}
+            className="relative min-w-0"
           >
             <div
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
-              className="relative h-[350px] md:h-[450px] w-full rounded-3xl overflow-hidden shadow-xl border-8 border-white bg-slate-100 select-none touch-pan-y"
+              className="
+                group relative h-[310px]
+                w-full select-none overflow-hidden
+                rounded-[22px]
+                bg-[#E9EEE6]
+                shadow-[0_12px_40px_rgba(52,78,65,0.1)]
+                touch-pan-y
+                sm:h-[400px]
+                lg:h-[440px]
+              "
             >
-              {/* Slides */}
               {ABOUT_IMAGES.map((img, index) => (
                 <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    index === activeSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-                  }`}
+                  key={img.url}
+                  className={`
+                    absolute inset-0
+                    transition-opacity duration-700
+                    ${
+                      index === activeSlide
+                        ? "z-10 opacity-100"
+                        : "pointer-events-none z-0 opacity-0"
+                    }
+                  `}
                 >
                   <img
                     src={img.url}
                     alt={img.alt}
-                    className="w-full h-full object-cover"
-                    draggable="false"
+                    draggable={false}
+                    className="h-full w-full object-cover"
                   />
                 </div>
               ))}
 
-              {/* Botones de navegación interna (visibles solo en md y con hover en el grupo) */}
+              {/* NAVEGACIÓN PC */}
               <button
+                type="button"
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity hidden md:block"
-                aria-label="Anterior imagen"
+                aria-label="Imagen anterior"
+                className="
+                  absolute left-4 top-1/2 z-20
+                  hidden h-10 w-10
+                  -translate-y-1/2
+                  items-center justify-center
+                  rounded-full bg-white/90
+                  text-[#344E41] shadow-md
+                  transition-all hover:bg-white
+                  md:flex
+                "
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft size={19} />
               </button>
+
               <button
+                type="button"
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity hidden md:block"
-                aria-label="Siguiente imagen"
+                aria-label="Imagen siguiente"
+                className="
+                  absolute right-4 top-1/2 z-20
+                  hidden h-10 w-10
+                  -translate-y-1/2
+                  items-center justify-center
+                  rounded-full bg-white/90
+                  text-[#344E41] shadow-md
+                  transition-all hover:bg-white
+                  md:flex
+                "
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight size={19} />
               </button>
             </div>
 
-            {/* Indicadores de bolitas inferiores */}
-            <div className="flex justify-center gap-2 mt-4">
-              {ABOUT_IMAGES.map((_, index) => (
+            {/* INDICADORES */}
+            <div className="mt-4 flex justify-center gap-2">
+              {ABOUT_IMAGES.map((img, index) => (
                 <button
-                  key={index}
+                  key={img.url}
+                  type="button"
                   onClick={() => setActiveSlide(index)}
-                  className={`h-2 rounded-full transition-all ${
-                    index === activeSlide ? "w-6 bg-brand-primary" : "w-2 bg-brand-primary/30"
-                  }`}
+                  aria-label={`Ver imagen ${index + 1}`}
+                  aria-current={
+                    activeSlide === index ? "true" : undefined
+                  }
+                  className={`
+                    h-2 rounded-full transition-all
+                    ${
+                      activeSlide === index
+                        ? "w-6 bg-[#588157]"
+                        : "w-2 bg-[#A3B18A]/40 hover:bg-[#A3B18A]"
+                    }
+                  `}
                 />
               ))}
             </div>
-
-            {/* Efecto decorativo de fondo */}
-            <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-brand-light rounded-full -z-10 blur-2xl opacity-40" />
           </motion.div>
 
-          {/* COLUMNA DERECHA: TEXTO INFORMATIVO */}
+          {/* INFORMACIÓN DE LA AGRUPACIÓN */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-full"
+            transition={{ duration: 0.5 }}
+            className="min-w-0"
           >
-            <span className="text-sm font-bold tracking-wider uppercase text-brand-primary block mb-2">Agrupación Voluntaria</span>
-            <h2 className="text-3xl md:text-5xl font-serif text-brand-dark mb-6 leading-tight">
-              ¿Quiénes <span className="text-brand-secondary italic">somos</span>?
+            <span
+              className="
+                mb-3 block text-[11px]
+                font-bold uppercase tracking-[0.16em]
+                text-[#588157]
+              "
+            >
+              Agrupación voluntaria
+            </span>
+
+            <h2
+              className="
+                mb-5 font-serif
+                text-[34px] font-semibold
+                leading-tight tracking-tight
+                text-[#344E41]
+                sm:text-[45px]
+              "
+            >
+              ¿Quiénes{" "}
+              <span className="italic text-[#8DA77A]">
+                somos
+              </span>
+              ?
             </h2>
-            <p className="text-lg text-brand-dark/70 mb-8 leading-relaxed">
-              Somos ciudadanas y ciudadanos de <strong>Armstrong, Santa Fe (Argentina)</strong> que compartimos un mismo propósito: construir un presente y un futuro mejor para los animales de nuestra ciudad. Nuestro lema nos guía en cada paso que damos de manera integral y comprometida.
+
+            <p
+              className="
+                mb-8 text-[14px] leading-[1.9]
+                text-[#6B7C70]
+                sm:text-[15px]
+              "
+            >
+              Somos ciudadanas y ciudadanos de{" "}
+              <strong className="font-semibold text-[#344E41]">
+                Armstrong, Santa Fe (Argentina)
+              </strong>{" "}
+              que compartimos un mismo propósito:
+              construir un presente y un futuro mejor
+              para los animales de nuestra ciudad.
+              Nuestro lema nos guía en cada paso que damos
+              de manera integral y comprometida.
             </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {ACTIONS.map((val, i) => (
-                <div key={i} className="flex gap-4 items-start group p-4 rounded-2xl hover:bg-white shadow-sm transition-all border border-transparent hover:border-brand-border">
-                  <div className="p-3 bg-brand-light rounded-xl text-brand-primary group-hover:scale-110 transition-transform shrink-0">
-                    {val.icon}
+
+            {/* ACCIONES */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {ACTIONS.map((action) => {
+                const Icon = action.icon;
+
+                return (
+                  <div
+                    key={action.title}
+                    className="
+                      flex items-start gap-3
+                      rounded-[16px]
+                      border border-[#E8EDE5]
+                      bg-white/70 p-4
+                      transition-all duration-300
+                      hover:border-[#A3B18A]/50
+                      hover:bg-white
+                      hover:shadow-sm
+                    "
+                  >
+                    <div
+                      className="
+                        flex h-10 w-10 shrink-0
+                        items-center justify-center
+                        rounded-xl bg-[#F0F5EB]
+                        text-[#588157]
+                      "
+                    >
+                      <Icon size={19} strokeWidth={1.8} />
+                    </div>
+
+                    <div className="min-w-0">
+                      <h4
+                        className="
+                          mb-1 text-[13px]
+                          font-semibold text-[#344E41]
+                        "
+                      >
+                        {action.title}
+                      </h4>
+
+                      <p
+                        className="
+                          text-[11px] leading-[1.75]
+                          text-[#7B897E]
+                          sm:text-[12px]
+                        "
+                      >
+                        {action.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-base font-bold text-brand-dark mb-1 font-sans">{val.title}</h4>
-                    <p className="text-xs text-slate-500 font-medium leading-relaxed">{val.desc}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
         </div>
-      </div>
 
-      {/* SECCIÓN INTEGRADA CON TEXTOS COMPLETAMENTE CENTRADOS */}
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-brand-light/40 border border-brand-border/60 rounded-3xl p-8 md:p-12 flex flex-col items-center justify-center text-center space-y-10"
-        >
-          {/* Encabezado del bloque */}
-          <div className="max-w-2xl mx-auto flex flex-col items-center">
-            <span className="text-xs font-bold tracking-wider uppercase text-brand-primary block mb-2">
-              Salud Pública y Prevención
-            </span>
-            <h3 className="text-2xl md:text-4xl font-serif text-brand-dark mb-4">
-              Trabajo en castraciones y concientización
-            </h3>
-            <p className="text-sm md:text-base text-brand-dark/70 leading-relaxed">
-              Apostamos fuerte a la castración masiva como la herramienta más efectiva para reducir el abandono. No solo actuamos ante la emergencia, también educamos y prevenimos.
-            </p>
-          </div>
-
-          {/* Tarjetas inferiores con contenido centrado */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl text-center">
-            
-
-          {/* Tarjeta 1: Campañas */}
-          <div className="bg-white p-6 rounded-2xl shadow-xs border border-brand-border/40 flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center text-brand-primary mb-3">
-              <Building2 className="w-5 h-5 mb-1" />
-              <h4 className="font-bold text-brand-dark">
-                Campañas de Castración Masivas
-              </h4>
-            </div>
-
-            <p className="text-xs text-slate-500 leading-relaxed max-w-md text-center mb-4">
-              Colaboramos activamente en{" "}
-              <strong>5 campañas de castración masiva al año</strong> coordinadas junto a
-              la Municipalidad de Armstrong, garantizando el acceso gratuito para toda la comunidad.
-            </p>
-
-            <div className="w-full border-t border-slate-200 pt-4">
-              <h5 className="text-sm font-bold text-brand-dark mb-3 text-center">
-                Contactos para masivas
-              </h5>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
-                  <span className="text-xs font-medium text-slate-700">
-                    Eli
-                  </span>
-                  <a
-                    href="tel:3471628767"
-                    className="text-xs font-semibold text-brand-primary hover:underline"
-                  >
-                    3471 62-8767
-                  </a>
-                </div>
-
-                <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
-                  <span className="text-xs font-medium text-slate-700">
-                    Vicky
-                  </span>
-                  <a
-                    href="tel:3471594581"
-                    className="text-xs font-semibold text-brand-primary hover:underline"
-                  >
-                    3471 59-4581
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-            {/* Tarjeta 2: Turnos y Veterinarias */}
-            <div className="bg-white p-6 rounded-2xl shadow-xs border border-brand-border/40 flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center text-brand-primary mb-3">
-                <Syringe className="w-5 h-5 mb-1" />
-                <h4 className="font-bold text-brand-dark">Turnos en Veterinarias</h4>
-              </div>
-
-              <p className="text-xs text-slate-500 leading-relaxed mb-4 max-w-md text-center">
-                Gestionamos <strong>30 turnos mensuales gratuitos</strong> otorgados por el
-                municipio en las veterinarias aliadas de la ciudad:
-              </p>
-
-              <div className="flex flex-wrap gap-2 justify-center pt-1 mb-5">
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
-                  El Estribo
-                </span>
-
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
-                  San Jorge
-                </span>
-
-                <span className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
-                  El Palenque
-                </span>
-              </div>
-
-  {/* Contactos */}
-  <div className="w-full border-t border-slate-200 pt-4">
-    <h5 className="text-sm font-bold text-brand-dark mb-3 text-center">
-      Contactos para solicitar turnos
-    </h5>
-
-    <div className="space-y-2 text-xs text-slate-600">
-      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
-        <span className="font-medium">El Estribo (Eli)</span>
-        <a
-          href="tel:3471628767"
-          className="text-brand-primary font-semibold hover:underline"
-        >
-          3471 62-8767
-        </a>
-      </div>
-
-      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
-        <span className="font-medium">San Jorge (Agus)</span>
-        <a
-          href="tel:3471570085"
-          className="text-brand-primary font-semibold hover:underline"
-        >
-          3471 57-0085
-        </a>
-      </div>
-
-      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
-        <span className="font-medium">El Palenque (Luci)</span>
-        <a
-          href="tel:3471347911"
-          className="text-brand-primary font-semibold hover:underline"
-        >
-          3471 34-7911
-        </a>
-      </div>
-
-      <div className="flex justify-between items-center bg-slate-50 rounded-lg px-3 py-2">
-        <span className="font-medium">El Palenque (Luchi)</span>
-        <a
-          href="tel:3471673977"
-          className="text-brand-primary font-semibold hover:underline"
-        >
-          3471 67-3977
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-          </div>
-        </motion.div>
+        {/* =============================
+            SALUD PÚBLICA
+        ============================= */}
+        <PublicHealth />
       </div>
     </section>
   );

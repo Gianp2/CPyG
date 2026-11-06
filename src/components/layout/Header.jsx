@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../ui/Button";
 import LogoImg from "../../img/logo.jpg"; 
@@ -16,10 +16,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -29,41 +27,24 @@ export default function Header() {
 
   const scrollToSection = (e, href) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      const offset = isScrolled ? 70 : 90; 
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     setIsMobileMenuOpen(false);
   };
 
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
-        isScrolled
-          ? "h-20 bg-white shadow-lg border-none" 
-          : "h-24 md:h-32 bg-transparent" 
+        isScrolled ? "h-20 bg-white shadow-lg border-none" : "h-24 md:h-32 bg-transparent"
       }`}
     >
       <nav className="max-w-7xl mx-auto h-full px-5 md:px-10 flex justify-between items-center">
         
         {/* Logo & Brand */}
         <Link to="/" className="flex items-center gap-3 md:gap-4 group">
-          {/* Contenedor del logo ajustado para no cortar bordes */}
           <div className={`relative transition-all duration-300 flex items-center justify-center ${
             isScrolled ? "w-12 h-12" : "w-20 h-20 md:w-28 md:h-28"
           }`}>
-            <img 
-              src={LogoImg} 
-              alt="Logo" 
-              className="w-full h-full object-contain" // "contain" asegura que se vea completo
-            />
+            <img src={LogoImg} alt="Logo" className="w-full h-full object-contain" />
           </div>
           
           <div className="flex flex-col">
@@ -85,8 +66,8 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <ul className="flex items-center gap-6 lg:gap-8">
             {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <a
@@ -95,11 +76,21 @@ export default function Header() {
                   className="text-sm font-bold text-brand-dark/80 hover:text-brand-primary transition-colors relative group py-2"
                 >
                   {link.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full" />
                 </a>
               </li>
             ))}
           </ul>
+
+          <a
+            href="#denuncias"
+            onClick={(e) => scrollToSection(e, "#denuncias")}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-red-600 bg-red-50 border border-red-200/60 rounded-full hover:bg-red-100 hover:border-red-300 transition-all duration-300 shadow-sm"
+          >
+            <AlertTriangle className="w-4 h-4" />
+            <span>Denuncias</span>
+          </a>
+
           <Button
             onClick={(e) => scrollToSection(e, "#animals")}
             className={`px-6 rounded-full font-bold transition-all duration-300 transform active:scale-95 shadow-sm ${
@@ -128,19 +119,16 @@ export default function Header() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.4 }}
-            className="fixed inset-0 w-full h-screen bg-white md:hidden z-[60] flex flex-col"
+            className="fixed inset-0 w-full h-screen bg-white md:hidden z-60 flex flex-col"
           >
             <div className="flex justify-between items-center px-6 h-24 border-b border-slate-100">
                <span className="font-black text-xl text-brand-dark">Menú</span>
-               <button 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 text-brand-dark"
-               >
+               <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-brand-dark">
                 <X size={28} />
                </button>
             </div>
 
-            <div className="flex flex-col gap-4 p-8">
+            <div className="flex flex-col gap-4 p-8 overflow-y-auto">
               {NAV_LINKS.map((link, index) => (
                 <motion.a
                   key={link.name}
@@ -155,12 +143,27 @@ export default function Header() {
                   <span className="text-brand-primary">→</span>
                 </motion.a>
               ))}
+
+              <motion.a
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                href="#denuncias"
+                onClick={(e) => scrollToSection(e, "#denuncias")}
+                className="text-3xl font-bold text-red-600 py-4 border-b border-slate-50 flex justify-between items-center group"
+              >
+                <span className="flex items-center gap-3">
+                  <AlertTriangle className="w-7 h-7" />
+                  Denuncias
+                </span>
+                <span className="text-red-500">→</span>
+              </motion.a>
               
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-10"
+                className="mt-6 space-y-4"
               >
                 <Button
                   onClick={(e) => scrollToSection(e, "#animals")}
